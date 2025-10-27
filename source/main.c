@@ -2,6 +2,7 @@
 #include <SBX/window.h>
 
 // Dependency headers
+#include <PR/PR.h>
 #include <cglm/struct.h>
 
 // LibC headers
@@ -16,7 +17,7 @@ int main(int argc, char* argv[]) {
     glfwInit();
 
     SBX_window_t window;
-    SBXWindowCreate(&window, "SBX", 800, 450);
+    SBX_window_report_t windowReport = SBXWindowCreate(&window, "SBX", 800, 450);
 
     while(!glfwWindowShouldClose(window.windowHandle)) {
         window.openglContext.Enable(GL_DEPTH_TEST);

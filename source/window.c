@@ -24,6 +24,9 @@ SBX_window_report_t SBXWindowCreate(SBX_window_t* window,
         };
     }
 
+    // Remove the window deinit flag (if set)
+    window->flags &= ~SBX_WINDOW_DEINIT;
+
     // Make sure GLFW is initialized
     if(glfwInit() != GLFW_TRUE) {
         // Return error
@@ -58,7 +61,7 @@ SBX_window_report_t SBXWindowCreate(SBX_window_t* window,
         };
     }
 
-    // Set window user pointer to the SBXWindow manager object
+    // Set window handle user pointer to the SBXWindow manager object
     glfwSetWindowUserPointer(window->windowHandle, window);
 
     // Get current window parameters
@@ -97,11 +100,22 @@ SBX_window_report_t SBXWindowDestroy(SBX_window_t* window) {
         };
     }
 
+    // Remove the window deinit flag (if set)
+    window->flags &= ~SBX_WINDOW_INIT;
+
     // Check if window handle exists, then destroy window and set handle to NULL
     if(window->windowHandle) {
         glfwDestroyWindow(window->windowHandle);
         window->windowHandle = NULL;
     }
+
+    // Reset window state parameters
+    window->title  = "\n";
+    window->width  = -1;
+    window->height = -1;
+
+    // Set the deinit flag
+    window->flags |= SBX_WINDOW_DEINIT;
 
     return (SBX_window_report_t){
         .problmaticFlags = 0,
