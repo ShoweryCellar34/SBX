@@ -1,0 +1,7 @@
+[submodule "vendors/Phantom-Renderer"]
+	path = vendors/Phantom-Renderer
+	url = https://github.com/ShoweryCellar34/Phantom-Renderer.git
+	branch = dev
+[submodule "vendors/glfw"]
+	path = vendors/glfw
+	url = https://github.com/glfw/glfw.git
