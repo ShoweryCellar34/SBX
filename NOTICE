@@ -1,0 +1,6 @@
+This project uses the following project(s):
+
+- GLFW: The license for GLFW can be found at `vendors/glfw/LICENCE.md`.
+- Phantom-Renderer: The license for Phantom-Renderer can be found at `vendors/Phantom-Renderer/LICENSE`.
+
+Please ensure to comply with the terms and conditions of each license when using these projects.
