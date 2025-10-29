@@ -10,17 +10,26 @@
 #include <stdlib.h>
 
 SBX_window_report_t SBXWindowCreate(SBX_window_t* window,
-                                    SBX_const_string_t title,
+                                    SBX_string_t title,
                                     SBX_window_dimensions_t width, 
                                     SBX_window_dimensions_t height)
 {
-    // Check if window and/or context is already initialized
+    // Check if required arguments are provided
+    if(!(window && title && width && height)) {
+        // Return error
+        return (SBX_window_report_t){
+            .problmaticFlags = 0,
+            .errorFlags      = SBX_WINDOW_ERROR_MISSING_ARGUMENT,
+            .reportMessage   = SBX_REPORT_STRING_WINDOW_MISSING_ARGUMENT
+        };
+    }
+    // Check if window is already initialized
     if(window->flags & SBX_WINDOW_INIT) {
         // Return error
         return (SBX_window_report_t){
             .problmaticFlags = SBX_WINDOW_INIT,
-            .errorFlags      = SBX_WINDOW_ERROR_BAD_FLAGS,
-            .reportMessage   = SBX_REPORT_STRING_WINDOW_INIT_BAD_FLAGS
+            .errorFlags      = SBX_WINDOW_ERROR_NOT_DEINIT,
+            .reportMessage   = SBX_REPORT_STRING_WINDOW_ALREADY_INIT
         };
     }
 
@@ -32,8 +41,8 @@ SBX_window_report_t SBXWindowCreate(SBX_window_t* window,
         // Return error
         return (SBX_window_report_t){
             .problmaticFlags = 0,
-            .errorFlags      = SBX_WINDOW_ERROR_GLFW_INIT_ERROR,
-            .reportMessage   = SBX_REPORT_STRING_WINDOW_INIT_GLFW_INIT_FAILED
+            .errorFlags      = SBX_WINDOW_ERROR_GLFW_INIT_FAILED,
+            .reportMessage   = SBX_REPORT_STRING_WINDOW_GLFW_INIT_FAILED
         };
     }
 
@@ -50,14 +59,11 @@ SBX_window_report_t SBXWindowCreate(SBX_window_t* window,
 
     // Check if window creation failed
     if(!window->windowHandle) {
-        // Define errors as flags
-        SBX_bit_flags_t errorFlags = SBX_WINDOW_ERROR_HANDLE_INIT_ERROR;
-
         // Return error
         return (SBX_window_report_t){
             .problmaticFlags = 0,
-            .errorFlags      = errorFlags,
-            .reportMessage   = SBX_REPORT_STRING_WINDOW_INIT_WINDOW_FAILED
+            .errorFlags      = SBX_WINDOW_ERROR_HANDLE_INIT_FAILED,
+            .reportMessage   = SBX_REPORT_STRING_WINDOW_HANDLE_FAILED
         };
     }
 
@@ -75,8 +81,8 @@ SBX_window_report_t SBXWindowCreate(SBX_window_t* window,
         // Return error
         return (SBX_window_report_t){
             .problmaticFlags = 0,
-            .errorFlags      = SBX_WINDOW_ERROR_CONTEXT_INIT_ERROR,
-            .reportMessage   = SBX_REPORT_STRING_WINDOW_INIT_CONTEXT_FAILED
+            .errorFlags      = SBX_WINDOW_ERROR_CONTEXT_INIT_FAILED,
+            .reportMessage   = SBX_REPORT_STRING_WINDOW_CONTEXT_FAILED
         };
     }
 
@@ -90,13 +96,22 @@ SBX_window_report_t SBXWindowCreate(SBX_window_t* window,
 }
 
 SBX_window_report_t SBXWindowDestroy(SBX_window_t* window) {
-    // Check if window and/or context is initialized
+    // Check if required arguments are provided
+    if(!window) {
+        // Return error
+        return (SBX_window_report_t){
+            .problmaticFlags = 0,
+            .errorFlags      = SBX_WINDOW_ERROR_MISSING_ARGUMENT,
+            .reportMessage   = SBX_REPORT_STRING_WINDOW_MISSING_ARGUMENT
+        };
+    }
+    // Check if window is not initialized
     if(window->flags & SBX_WINDOW_DEINIT) {
         // Return error
         return (SBX_window_report_t){
             .problmaticFlags = SBX_WINDOW_DEINIT,
-            .errorFlags      = SBX_WINDOW_ERROR_BAD_FLAGS,
-            .reportMessage   = SBX_REPORT_STRING_WINDOW_DEINIT_BAD_FLAGS
+            .errorFlags      = SBX_WINDOW_ERROR_NOT_INIT,
+            .reportMessage   = SBX_REPORT_STRING_WINDOW_ALREADY_DEINIT
         };
     }
 
@@ -121,5 +136,83 @@ SBX_window_report_t SBXWindowDestroy(SBX_window_t* window) {
         .problmaticFlags = 0,
         .errorFlags      = 0,
         .reportMessage   = SBX_REPORT_STRING_WINDOW_DEINIT_SUCCESSFUL
+    };
+}
+
+SBX_window_report_t SBXWindowGetSize(SBX_window_t* window, SBX_window_dimensions_t* width, SBX_window_dimensions_t* height) {
+    // Check if required arguments are provided
+    if(!window) {
+        // Return error
+        return (SBX_window_report_t){
+            .problmaticFlags = 0,
+            .errorFlags      = SBX_WINDOW_ERROR_MISSING_ARGUMENT,
+            .reportMessage   = SBX_REPORT_STRING_WINDOW_MISSING_ARGUMENT
+        };
+    }
+    // Check if window is initialized
+    if(!(window->flags & SBX_WINDOW_INIT)) {
+        // Return error
+        return (SBX_window_report_t){
+            .problmaticFlags = SBX_WINDOW_DEINIT,
+            .errorFlags      = SBX_WINDOW_ERROR_NOT_INIT,
+            .reportMessage   = SBX_REPORT_STRING_WINDOW_HANDLE_NOT_INIT
+        };
+    }
+
+    // Get window size
+    glfwGetWindowSize(window->windowHandle, width, height);
+    if((width && *width == 0) || (height && *height == 0)) {
+        // Return error
+        return (SBX_window_report_t){
+            .problmaticFlags = 0,
+            .errorFlags      = SBX_WINDOW_ERROR_GET_FAILED,
+            .reportMessage   = SBX_REPORT_STRING_WINDOW_GET_FAILED
+        };
+    }
+
+    // Return success
+    return (SBX_window_report_t){
+        .problmaticFlags = 0,
+        .errorFlags      = 0,
+        .reportMessage   = SBX_REPORT_STRING_WINDOW_GET_SUCCESSFUL
+    };
+}
+
+SBX_window_report_t SBXWindowGetTitle(SBX_window_t* window, SBX_string_t* title) {
+    // Check if required arguments are provided
+    if(!(window && title)) {
+        // Return error
+        return (SBX_window_report_t){
+            .problmaticFlags = 0,
+            .errorFlags      = SBX_WINDOW_ERROR_MISSING_ARGUMENT,
+            .reportMessage   = SBX_REPORT_STRING_WINDOW_MISSING_ARGUMENT
+        };
+    }
+    // Check if window is initialized
+    if(!(window->flags & SBX_WINDOW_INIT)) {
+        // Return error
+        return (SBX_window_report_t){
+            .problmaticFlags = SBX_WINDOW_DEINIT,
+            .errorFlags      = SBX_WINDOW_ERROR_NOT_INIT,
+            .reportMessage   = SBX_REPORT_STRING_WINDOW_HANDLE_NOT_INIT
+        };
+    }
+
+    // Get window size
+    *title = glfwGetWindowTitle(window->windowHandle);
+    if(*title == NULL) {
+        // Return error
+        return (SBX_window_report_t){
+            .problmaticFlags = 0,
+            .errorFlags      = SBX_WINDOW_ERROR_GET_FAILED,
+            .reportMessage   = SBX_REPORT_STRING_WINDOW_GET_FAILED
+        };
+    }
+
+    // Return success
+    return (SBX_window_report_t){
+        .problmaticFlags = 0,
+        .errorFlags      = 0,
+        .reportMessage   = SBX_REPORT_STRING_WINDOW_GET_SUCCESSFUL
     };
 }
