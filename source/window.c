@@ -9,6 +9,7 @@
 // LibC headers
 #include <stdlib.h>
 
+// Window creation function
 SBX_window_report_t SBXWindowCreate(SBX_window_t* window,
                                     SBX_string_t title,
                                     SBX_window_dimensions_t width, 
@@ -70,10 +71,6 @@ SBX_window_report_t SBXWindowCreate(SBX_window_t* window,
     // Set window handle user pointer to the SBXWindow manager object
     glfwSetWindowUserPointer(window->windowHandle, window);
 
-    // Get current window parameters
-    glfwGetWindowSize(window->windowHandle, &window->width, &window->height);
-    window->title = glfwGetWindowTitle(window->windowHandle);
-
     // Make our window handle the current context
     glfwMakeContextCurrent(window->windowHandle);
     // Attempt to initialize context
@@ -95,6 +92,7 @@ SBX_window_report_t SBXWindowCreate(SBX_window_t* window,
     };
 }
 
+// Window destruction function
 SBX_window_report_t SBXWindowDestroy(SBX_window_t* window) {
     // Check if required arguments are provided
     if(!window) {
@@ -124,11 +122,6 @@ SBX_window_report_t SBXWindowDestroy(SBX_window_t* window) {
         window->windowHandle = NULL;
     }
 
-    // Reset window state parameters
-    window->title  = "\n";
-    window->width  = -1;
-    window->height = -1;
-
     // Set the deinit flag
     window->flags |= SBX_WINDOW_DEINIT;
 
@@ -139,6 +132,7 @@ SBX_window_report_t SBXWindowDestroy(SBX_window_t* window) {
     };
 }
 
+// Window get size function
 SBX_window_report_t SBXWindowGetSize(SBX_window_t* window, SBX_window_dimensions_t* width, SBX_window_dimensions_t* height) {
     // Check if required arguments are provided
     if(!window) {
@@ -166,7 +160,7 @@ SBX_window_report_t SBXWindowGetSize(SBX_window_t* window, SBX_window_dimensions
         return (SBX_window_report_t){
             .problmaticFlags = 0,
             .errorFlags      = SBX_WINDOW_ERROR_GET_FAILED,
-            .reportMessage   = SBX_REPORT_STRING_WINDOW_GET_FAILED
+            .reportMessage   = SBX_REPORT_STRING_WINDOW_GET_SIZE_FAILED
         };
     }
 
@@ -174,10 +168,11 @@ SBX_window_report_t SBXWindowGetSize(SBX_window_t* window, SBX_window_dimensions
     return (SBX_window_report_t){
         .problmaticFlags = 0,
         .errorFlags      = 0,
-        .reportMessage   = SBX_REPORT_STRING_WINDOW_GET_SUCCESSFUL
+        .reportMessage   = SBX_REPORT_STRING_WINDOW_GET_SIZE_SUCCESSFUL
     };
 }
 
+// Window get title function
 SBX_window_report_t SBXWindowGetTitle(SBX_window_t* window, SBX_string_t* title) {
     // Check if required arguments are provided
     if(!(window && title)) {
@@ -205,7 +200,7 @@ SBX_window_report_t SBXWindowGetTitle(SBX_window_t* window, SBX_string_t* title)
         return (SBX_window_report_t){
             .problmaticFlags = 0,
             .errorFlags      = SBX_WINDOW_ERROR_GET_FAILED,
-            .reportMessage   = SBX_REPORT_STRING_WINDOW_GET_FAILED
+            .reportMessage   = SBX_REPORT_STRING_WINDOW_GET_TITLE_FAILED
         };
     }
 
@@ -213,6 +208,86 @@ SBX_window_report_t SBXWindowGetTitle(SBX_window_t* window, SBX_string_t* title)
     return (SBX_window_report_t){
         .problmaticFlags = 0,
         .errorFlags      = 0,
-        .reportMessage   = SBX_REPORT_STRING_WINDOW_GET_SUCCESSFUL
+        .reportMessage   = SBX_REPORT_STRING_WINDOW_GET_TITLE_SUCCESSFUL
+    };
+}
+
+// Window set size function
+SBX_window_report_t SBXWindowSetSize(SBX_window_t* window, SBX_window_dimensions_t width, SBX_window_dimensions_t height) {
+    // Check if required arguments are provided
+    if(!(window && width && height)) {
+        // Return error
+        return (SBX_window_report_t){
+            .problmaticFlags = 0,
+            .errorFlags      = SBX_WINDOW_ERROR_MISSING_ARGUMENT,
+            .reportMessage   = SBX_REPORT_STRING_WINDOW_MISSING_ARGUMENT
+        };
+    }
+    // Check if window is initialized
+    if(!(window->flags & SBX_WINDOW_INIT)) {
+        // Return error
+        return (SBX_window_report_t){
+            .problmaticFlags = SBX_WINDOW_DEINIT,
+            .errorFlags      = SBX_WINDOW_ERROR_NOT_INIT,
+            .reportMessage   = SBX_REPORT_STRING_WINDOW_HANDLE_NOT_INIT
+        };
+    }
+
+    // Set window size
+    glfwSetWindowSize(window->windowHandle, width, height);
+    if(glfwGetError(NULL)) {
+        // Return error
+        return (SBX_window_report_t){
+            .problmaticFlags = SBX_WINDOW_DEINIT,
+            .errorFlags      = SBX_WINDOW_ERROR_SET_FAILED,
+            .reportMessage   = SBX_REPORT_STRING_WINDOW_SET_SIZE_FAILED
+        };
+    }
+
+    // Return success
+    return (SBX_window_report_t){
+        .problmaticFlags = 0,
+        .errorFlags      = 0,
+        .reportMessage   = SBX_REPORT_STRING_WINDOW_SET_SIZE_SUCCESSFUL
+    };
+}
+
+// Window get title function
+SBX_window_report_t SBXWindowSetTitle(SBX_window_t* window, SBX_string_t title) {
+    // Check if required arguments are provided
+    if(!(window && title)) {
+        // Return error
+        return (SBX_window_report_t){
+            .problmaticFlags = 0,
+            .errorFlags      = SBX_WINDOW_ERROR_MISSING_ARGUMENT,
+            .reportMessage   = SBX_REPORT_STRING_WINDOW_MISSING_ARGUMENT
+        };
+    }
+    // Check if window is initialized
+    if(!(window->flags & SBX_WINDOW_INIT)) {
+        // Return error
+        return (SBX_window_report_t){
+            .problmaticFlags = SBX_WINDOW_DEINIT,
+            .errorFlags      = SBX_WINDOW_ERROR_NOT_INIT,
+            .reportMessage   = SBX_REPORT_STRING_WINDOW_HANDLE_NOT_INIT
+        };
+    }
+
+    // Set window size
+    glfwSetWindowTitle(window->windowHandle, title);
+    if(glfwGetError(NULL)) {
+        // Return error
+        return (SBX_window_report_t){
+            .problmaticFlags = SBX_WINDOW_DEINIT,
+            .errorFlags      = SBX_WINDOW_ERROR_SET_FAILED,
+            .reportMessage   = SBX_REPORT_STRING_WINDOW_SET_TITLE_FAILED
+        };
+    }
+
+    // Return success
+    return (SBX_window_report_t){
+        .problmaticFlags = 0,
+        .errorFlags      = 0,
+        .reportMessage   = SBX_REPORT_STRING_WINDOW_SET_TITLE_SUCCESSFUL
     };
 }
