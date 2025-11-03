@@ -9,7 +9,9 @@ set(GLFW_LIBRARY_TYPE   "STATIC" CACHE STRING "Library type override for GLFW (S
 add_subdirectory(vendors/glfw)
 
 project(SH34-SBX LANGUAGES C)
-set(CMAKE_C_STANDARD 23)
+set(CMAKE_C_STANDARD 17)
+set(CMAKE_C_STANDARD_REQUIRED ON)
+set(C_EXTENSIONS OFF)
 
 file(GLOB_RECURSE SBX_C_SOURCE "source/*.c")
 add_executable(SBX ${SBX_C_SOURCE})

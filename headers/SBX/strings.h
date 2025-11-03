@@ -1,7 +1,7 @@
 #ifndef SBX_STRINGS_H
 #define SBX_STRINGS_H
 
-// Report error strings
+// SBXwindow error strings
 #define SBX_REPORT_STRING_WINDOW_MISSING_ARGUMENT     "One or more required arguments set to NULL"
 #define SBX_REPORT_STRING_WINDOW_ALREADY_INIT         "Window and/or OpenGL context already initialized"
 
@@ -16,7 +16,7 @@
 #define SBX_REPORT_STRING_WINDOW_SET_SIZE_FAILED      "Setting window size failed"
 #define SBX_REPORT_STRING_WINDOW_SET_TITLE_FAILED     "Setting window title failed"
 
-// Report strings
+// SBXWindow success strings
 #define SBX_REPORT_STRING_WINDOW_INIT_SUCCESSFUL      "Successfuly created window"
 #define SBX_REPORT_STRING_WINDOW_DEINIT_SUCCESSFUL    "Successfuly destroyed window"
 #define SBX_REPORT_STRING_WINDOW_GET_SIZE_SUCCESSFUL  "Successfuly got window size"
