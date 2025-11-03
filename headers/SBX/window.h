@@ -29,23 +29,30 @@ enum SBXWindowErrorFlags {
 /// @brief Structure used by SBXWindow management functions to report exit state for operation
 struct SBXWindowReport {
     // Flags
-    SBX_bit_flags_t    problmaticFlags; // SBXWindowFlags
-    SBX_bit_flags_t    errorFlags;      // SBXWindowErrorFlags
+    SBX_bit_flags_t problmaticFlags; // SBXWindowFlags
+    SBX_bit_flags_t errorFlags;      // SBXWindowErrorFlags
 
     // Error string
-    SBX_string_t reportMessage;
+    SBX_string_t    reportMessage;
 };
 
 /// @brief Structure used by SBXWindow fuctions to store window handle, OpenGl context, and more data to repesent a window
 struct SBXWindow {
     // State flags (DO NOT EDIT)
-    SBX_bit_flags_t         flags; // SBXWindowFlags
+    SBX_bit_flags_t flags; // SBXWindowFlags
 
     // Handles
-    GLFWwindow*             windowHandle;
-    GladGLContext           openglContext;
+    GLFWwindow*     windowHandle;
+    GladGLContext   openglContext;
 };
 
+/// @brief Allocates memory for a SBXWindow object and then initializes values to a shutdown state
+/// @return A pointer to the allocated SBXWindow object or NULL if error
+SBX_window_t* SBXWindowCreate();
+
+/// @brief Allocates memory for a SBXWindow object and then initializes values to a shutdown state
+/// @return A pointer to the allocated SBXWindow object or NULL if error
+// SBX_window_t* SBXWindowDeinit();
 
 /// @brief Creates the window handle, initializes the OpenGl context, sets window init state flag, and other state settings such as title, width, height, etc.
 /// @param window SBXWindow struct used to retrive, store, and check initialization related window data, cannot be NULL
@@ -56,16 +63,16 @@ struct SBXWindow {
 ///         Possible errors include: SBX_WINDOW_ERROR_MISSING_ARGUMENT, SBX_WINDOW_ERROR_NOT_DEINIT,
 ///                                  SBX_WINDOW_ERROR_GLFW_INIT_FAILED, SBX_WINDOW_ERROR_HANDLE_INIT_FAILED,
 ///                                  SBX_WINDOW_ERROR_CONTEXT_INIT_FAILED
-SBX_window_report_t SBXWindowCreate(SBX_window_t* window,
-                                   SBX_string_t title,
-                                   SBX_window_dimensions_t width,
-                                   SBX_window_dimensions_t height);
+SBX_window_report_t SBXWindowInit(SBX_window_t* window,
+                                  SBX_string_t title,
+                                  SBX_window_dimensions_t width,
+                                  SBX_window_dimensions_t height);
 
 /// @brief Destroys the window handle, deinitializes the OpenGl context, sets window deinit state flag, and unsets other state settings such as title, width, height, etc.
 /// @param window SBXWindow struct used to retrive, store, and check deinitialization related window data, cannot be NULL
 /// @return A SBXWindowReport struct that reports the return state of the destruction function, this can be an error, or a success
 ///         Possible errors include: SBX_WINDOW_ERROR_MISSING_ARGUMENT, SBX_WINDOW_ERROR_NOT_INIT
-SBX_window_report_t SBXWindowDestroy(SBX_window_t* window);
+SBX_window_report_t SBXWindowDeinit(SBX_window_t* window);
 
 /// @note This function does not cache values
 /// @brief Gets the width and height of the supplied window and stores them in the supplied pointers, width and/or height can be NULL, on error width and height (if not NULL) will be set to 0

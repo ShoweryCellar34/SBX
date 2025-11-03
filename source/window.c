@@ -9,11 +9,23 @@
 // LibC headers
 #include <stdlib.h>
 
+// Window allocation function
+SBX_window_t* SBXWindowCreate() {
+    SBX_window_t* window = malloc(sizeof(SBX_window_t));
+    if(!window) {
+        return NULL;
+    }
+    window->flags        = SBX_WINDOW_DEINIT;
+    window->windowHandle = NULL;
+
+    return window;
+}
+
 // Window creation function
-SBX_window_report_t SBXWindowCreate(SBX_window_t* window,
-                                    SBX_string_t title,
-                                    SBX_window_dimensions_t width, 
-                                    SBX_window_dimensions_t height)
+SBX_window_report_t SBXWindowInit(SBX_window_t* window,
+                                  SBX_string_t title,
+                                  SBX_window_dimensions_t width, 
+                                  SBX_window_dimensions_t height)
 {
     // Check if required arguments are provided
     if(!(window && title && width && height)) {
@@ -93,7 +105,7 @@ SBX_window_report_t SBXWindowCreate(SBX_window_t* window,
 }
 
 // Window destruction function
-SBX_window_report_t SBXWindowDestroy(SBX_window_t* window) {
+SBX_window_report_t SBXWindowDeinit(SBX_window_t* window) {
     // Check if required arguments are provided
     if(!window) {
         // Return error

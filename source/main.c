@@ -17,12 +17,12 @@ int main(int argc, char* argv[]) {
     // Set error callback for GLFW
     glfwSetErrorCallback(errorCallback);
 
-    // Not needed becuase this is done by SBXWindowCreate, but still good practice if we need to do GLFW stuff before creating the window
+    // Not needed becuase this is done by SBXWindowDeinit, but still good practice if we need to do GLFW stuff before creating the window
     glfwInit();
 
     // Create the window
     SBX_window_t window;
-    SBX_window_report_t windowReport = SBXWindowCreate(&window, "SBX", 1200, 675);
+    SBX_window_report_t windowReport = SBXWindowInit(&window, "SBX", 1200, 675);
 
     // Check if window was create properly
     if(windowReport.errorFlags) {
@@ -42,7 +42,7 @@ int main(int argc, char* argv[]) {
     }
 
     // Destroy window
-    windowReport = SBXWindowDestroy(&window);
+    windowReport = SBXWindowDeinit(&window);
 
     // Check if window was destroyed properly
     if(windowReport.errorFlags) {
