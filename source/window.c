@@ -10,15 +10,34 @@
 #include <stdlib.h>
 
 // Window allocation function
-SBX_window_t* SBXWindowCreate() {
-    SBX_window_t* window = malloc(sizeof(SBX_window_t));
-    if(!window) {
-        return NULL;
+SBX_window_report_t SBXWindowCreate(SBX_window_t** window) {
+    // Check if required arguments are provided
+    if(!(window && *window)) {
+        // Return error
+        return (SBX_window_report_t){
+            .problmaticFlags = 0,
+            .errorFlags      = SBX_WINDOW_ERROR_MISSING_ARGUMENT,
+            .reportMessage   = SBX_REPORT_STRING_WINDOW_MISSING_ARGUMENT
+        };
     }
-    window->flags        = SBX_WINDOW_DEINIT;
-    window->windowHandle = NULL;
 
-    return window;
+    *window = malloc(sizeof(SBX_window_t));
+    if(!*window) {
+        // Return error
+        return (SBX_window_report_t){
+            .problmaticFlags = 0,
+            .errorFlags      = SBX_WINDOW_ERROR_MEMORY_FAILURE,
+            .reportMessage   = SBX_REPORT_STRING_WINDOW_MEMORY_FAILURE
+        };
+    }
+    *window->flags        = SBX_WINDOW_DEINIT;
+    *window->windowHandle = NULL;
+
+    return (SBX_window_report_t){
+        .problmaticFlags = 0,
+        .errorFlags      = 0,
+        .reportMessage   = SBX_REPORT_STRING_WINDOW_CREATION_SUCCESSFUL
+    };
 }
 
 // Window creation function
@@ -37,7 +56,7 @@ SBX_window_report_t SBXWindowInit(SBX_window_t* window,
         };
     }
     // Check if window is already initialized
-    if(window->flags & SBX_WINDOW_INIT) {
+    if(!(window->flags & SBX_WINDOW_DEINIT)) {
         // Return error
         return (SBX_window_report_t){
             .problmaticFlags = SBX_WINDOW_INIT,
@@ -85,8 +104,23 @@ SBX_window_report_t SBXWindowInit(SBX_window_t* window,
 
     // Make our window handle the current context
     glfwMakeContextCurrent(window->windowHandle);
+
+    // Attempt to allocate memory for the OpenGL context
+    window->openglContext = malloc(sizeof(GladGLContext));
+    if(!window->openglContext) {
+        // Return error
+        return (SBX_window_report_t){
+            .problmaticFlags = 0,
+            .errorFlags      = SBX_WINDOW_ERROR_MEMORY_FAILURE,
+            .reportMessage   = SBX_REPORT_STRING_WINDOW_MEMORY_FAILURE
+        };
+    }
+
     // Attempt to initialize context
-    if(!gladLoadGLContext(&window->openglContext, (GLADloadfunc)glfwGetProcAddress)) {
+    if(!gladLoadGLContext(window->openglContext, (GLADloadfunc)glfwGetProcAddress)) {
+        // Free the memory used by the GladGLContext struct before exiting
+        free(window->openglContext);
+
         // Return error
         return (SBX_window_report_t){
             .problmaticFlags = 0,
@@ -115,8 +149,8 @@ SBX_window_report_t SBXWindowDeinit(SBX_window_t* window) {
             .reportMessage   = SBX_REPORT_STRING_WINDOW_MISSING_ARGUMENT
         };
     }
-    // Check if window is not initialized
-    if(window->flags & SBX_WINDOW_DEINIT) {
+    // Check if window is not already deinitialized
+    if(!(window->flags & SBX_WINDOW_INIT)) {
         // Return error
         return (SBX_window_report_t){
             .problmaticFlags = SBX_WINDOW_DEINIT,
@@ -125,13 +159,18 @@ SBX_window_report_t SBXWindowDeinit(SBX_window_t* window) {
         };
     }
 
-    // Remove the window deinit flag (if set)
+    // Remove the window init flag
     window->flags &= ~SBX_WINDOW_INIT;
 
     // Check if window handle exists, then destroy window and set handle to NULL
     if(window->windowHandle) {
         glfwDestroyWindow(window->windowHandle);
         window->windowHandle = NULL;
+    }
+
+    // Check if the OpenGL context is allocated/initialized, then free the memory
+    if(window->openglContext) {
+        free(window->openglContext);
     }
 
     // Set the deinit flag

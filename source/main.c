@@ -34,7 +34,7 @@ int main(int argc, char* argv[]) {
     // Main application loop
     while(!glfwWindowShouldClose(window.windowHandle)) {
         // Clear the framebuffer
-        prFramebufferClearColor(&window.openglContext, NULL, 0, (vec4s){1.0f, 0.0f, 0.0f, 1.0f});
+        prFramebufferClearColor(window.openglContext, NULL, 0, (vec4s){1.0f, 0.0f, 0.0f, 1.0f});
 
         // Swap buffers and check for inputs
         glfwSwapBuffers(window.windowHandle);
