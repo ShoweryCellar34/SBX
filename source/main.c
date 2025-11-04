@@ -21,29 +21,45 @@ int main(int argc, char* argv[]) {
     glfwInit();
 
     // Create the window
-    SBX_window_t window;
-    SBX_window_report_t windowReport = SBXWindowInit(&window, "SBX", 1200, 675);
-
-    // Check if window was create properly
+    SBX_window_t* window = NULL;
+    SBX_window_report_t windowReport = SBXWindowCreate(&window);
+    // Check if window was created properly
     if(windowReport.errorFlags) {
         printf("Failed to create window: %s", windowReport.reportMessage);
         glfwTerminate();
         return 1;
     }
 
+    // Initialize window
+    windowReport = SBXWindowInit(window, "SBX", 1200, 675);
+    // Check if window was initialized properly
+    if(windowReport.errorFlags) {
+        printf("Failed to initialize window: %s", windowReport.reportMessage);
+        glfwTerminate();
+        return 1;
+    }
+
     // Main application loop
-    while(!glfwWindowShouldClose(window.windowHandle)) {
+    while(!glfwWindowShouldClose(window->windowHandle)) {
         // Clear the framebuffer
-        prFramebufferClearColor(window.openglContext, NULL, 0, (vec4s){1.0f, 0.0f, 0.0f, 1.0f});
+        prFramebufferClearColor(window->openglContext, NULL, 0, (vec4s){1.0f, 0.0f, 0.0f, 1.0f});
 
         // Swap buffers and check for inputs
-        glfwSwapBuffers(window.windowHandle);
+        glfwSwapBuffers(window->windowHandle);
         glfwPollEvents();
     }
 
-    // Destroy window
-    windowReport = SBXWindowDeinit(&window);
+    // Deinit window
+    windowReport = SBXWindowDeinit(window);
+    // Check if window was deinitialized properly
+    if(windowReport.errorFlags) {
+        printf("Failed to deinitialize window: %s", windowReport.reportMessage);
+        glfwTerminate();
+        return 1;
+    }
 
+    // Destroy window
+    windowReport = SBXWindowDestroy(window);
     // Check if window was destroyed properly
     if(windowReport.errorFlags) {
         printf("Failed to destroy window: %s", windowReport.reportMessage);

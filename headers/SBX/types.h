@@ -6,10 +6,12 @@
 
 // LibC headers
 #include <stdint.h>
+#include <stdbool.h>
 
 typedef struct SBXWindowReport SBX_window_report_t;
 typedef struct SBXWindow       SBX_window_t;
 
+typedef bool                   SBX_bool_t;
 typedef uint16_t               SBX_bit_flags_t;
 typedef int                    SBX_window_dimensions_t;
 typedef int                    SBX_window_position_t;
