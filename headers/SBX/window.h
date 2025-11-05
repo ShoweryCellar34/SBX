@@ -10,10 +10,10 @@
 
 /// @brief Structure used by SBXWindow functions to report exit state for operation
 struct SBXWindowReport {
-    // Flags
-    SBX_bit_flags_t errorFlags; // SBXWindowErrorFlags
+    /// @brief This variable contains the bit flag for the error that was raised
+    SBX_bit_flags_t errorFlags; // SBXWindowErrorFlags or SBXCommonErrorFlags
 
-    // Error string
+    /// @brief This variable contains an error message to go with the error
     SBX_string_t    reportMessage;
 };
 

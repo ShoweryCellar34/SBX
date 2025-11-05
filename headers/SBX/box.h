@@ -6,10 +6,10 @@
 
 /// @brief Structure used by SBXBox functions to report exit state for operation
 struct SBXBoxReport {
-    // Flags
-    SBX_bit_flags_t errorFlags; // SBXBoxErrorFlags
+    /// @brief This variable contains the bit flag for the error that was raised
+    SBX_bit_flags_t errorFlags; // SBXBoxErrorFlags or SBXCommonErrorFlags
 
-    // Error string
+    /// @brief This variable contains an error message to go with the error
     SBX_string_t    reportMessage;
 };
 

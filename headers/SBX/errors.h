@@ -3,7 +3,9 @@
 
 // Common error type flags
 enum SBXCommonErrorFlags {
+    /// @brief This error is generated when one or more required arguments are set to NULL, 0, or another state that represents an unset value
     SBX_COMMON_ERROR_MISSING_ARGUMENT    = 1 << 0,
+    /// @brief This error is generated when a memory operation fails (malloc, realloc, free, etc.)
     SBX_COMMON_ERROR_MEMORY_FAILURE      = 1 << 1
 };
 
@@ -24,18 +26,14 @@ enum SBXWindowErrorFlags {
 
 // SBXBoxReport error type flags
 enum SBXBoxErrorFlags {
-    SBX_BOX_ERROR_MISSING_ARGUMENT = 1 << 0,
-    SBX_BOX_                       = 1 << 1,
-    SBX_BOX_ERROR_GET_FAILED       = 1 << 2,
-    SBX_BOX_ERROR_SET_FAILED       = 1 << 3
+    SBX_BOX_ERROR_GET_FAILED       = 1 << 0,
+    SBX_BOX_ERROR_SET_FAILED       = 1 << 1
 };
 
 // SBXPlockReport error type flags
 enum SBXPlockErrorFlags {
-    SBX_PLOCK_ERROR_MISSING_ARGUMENT = 1 << 0,
-    SBX_PLOCK_                       = 1 << 1,
-    SBX_PLOCK_ERROR_GET_FAILED       = 1 << 2,
-    SBX_PLOCK_ERROR_SET_FAILED       = 1 << 3
+    SBX_PLOCK_ERROR_GET_FAILED       = 1 << 0,
+    SBX_PLOCK_ERROR_SET_FAILED       = 1 << 1
 };
 
 #endif // SBX_ERROR_H

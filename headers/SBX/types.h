@@ -31,4 +31,6 @@ typedef struct SBXPlockReport  SBX_plock_report_t;
 typedef struct SBXPlock        SBX_plock_t;
 typedef uint8_t                SBX_plock_id_t;
 
+#define SBX_COLOR_UNSET        (SBX_color_t){-1.0f, -1.0f, -1.0f}
+
 #endif // SBX_TYPES_H

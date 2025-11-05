@@ -4,7 +4,7 @@
 #include <SBX/strings.h>
 
 // Plock creation function
-SBX_plock_report_t SBXPlockCreate(SBX_plock_t** plock, SBX_color_t color) {
+SBX_plock_report_t SBXPlockCreate(SBX_plock_t** plock, SBX_color_t color, SBX_color_t color2) {
     // Check if required arguments are provided
     if(!plock) {
         // Return error
@@ -27,7 +27,8 @@ SBX_plock_report_t SBXPlockCreate(SBX_plock_t** plock, SBX_color_t color) {
     }
 
     // Set SBXPlock members to values provided
-    (*plock)->color = color;
+    (*plock)->color  = color;
+    (*plock)->color2 = color2;
 
     return (SBX_plock_report_t){
         .errorFlags    = 0,
