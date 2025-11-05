@@ -1,5 +1,8 @@
 // Project headers
 #include <SBX/window.h>
+#include <SBX/box.h>
+#include <SBX/plock.h>
+#include <SBX/types.h>
 
 // Dependency headers
 #include <PR/PR.h>
