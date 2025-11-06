@@ -3,19 +3,11 @@
 
 // Project headers
 #include <SBX/types.h>
+#include <SBX/report.h>
 
 // Dependency headers
 #include <glad/gl.h>
 #include <GLFW/glfw3.h>
-
-/// @brief Structure used by SBXWindow functions to report exit state for operation
-struct SBXWindowReport {
-    /// @brief This variable contains the bit flag for the error that was raised
-    SBX_bit_flags_t errorFlags; // SBXWindowErrorFlags or SBXCommonErrorFlags
-
-    /// @brief This variable contains an error message to go with the error
-    SBX_string_t    reportMessage;
-};
 
 /// @brief Structure used by SBXWindow fuctions to store window handle, OpenGl context, and more data to represent a window
 struct SBXWindow {
@@ -28,71 +20,71 @@ struct SBXWindow {
 };
 
 /// @brief Allocates memory for a SBXWindow object and then initializes values to a deinitialized state, on error the address pointed to by the SBX_window_t** will be set to NULL
-/// @param window A pointer to a SBX_window_t pointer to set to the allocated SBXWindow pointer, cannot be NULL
-/// @return A SBXWindowReport struct that reports the return state of the creation function, this can be an error, or a success.
+/// @param window A pointer to a SBX_window_t pointer to set to the allocated SBXWindow objects memory, cannot be SBX_POINTER_UNSET
+/// @return A SBXReport struct that reports the return state of the creation function, this can be an error, or a success.
 ///         Possible errors include: SBX_WINDOW_ERROR_MISSING_ARGUMENT, SBX_WINDOW_ERROR_MEMORY_FAILURE
-SBX_window_report_t SBXWindowCreate(SBX_window_t** window);
+SBX_report_t SBXWindowCreate(SBX_window_t** window);
 
 /// @brief Deallocates a SBXWindow objects memory after check for deinitialization
-/// @param window A SBX_window_t pointer to the desired SBXWindow to be destroyed, cannot be NULL
-/// @return A SBXWindowReport struct that reports the return state of the destruction function, this can be an error, or a success.
+/// @param window A SBX_window_t pointer to the desired SBXWindow to be destroyed, cannot be SBX_POINTER_UNSET
+/// @return A SBXReport struct that reports the return state of the destruction function, this can be an error, or a success.
 ///         Possible errors include: SBX_WINDOW_ERROR_MISSING_ARGUMENT, SBX_WINDOW_ERROR_NOT_DEINIT
-SBX_window_report_t SBXWindowDestroy(SBX_window_t* window);
+SBX_report_t SBXWindowDestroy(SBX_window_t* window);
 
 /// @brief Creates the window handle, initializes the OpenGl context, sets window init state flag, and other state settings such as title, width, height, etc.
-/// @param window SBXWindow struct used to retrive, store, and check initialization related window data, cannot be NULL
-/// @param title  The desired title for the window, cannot be NULL
-/// @param width  The desired width for the window, cannot be 0
-/// @param height The desired height for the window, cannot be 0
-/// @return A SBXWindowReport struct that reports the return state of the initialization function, this can be an error, or a success.
+/// @param window SBXWindow struct used to retrive, store, and check initialization related window data, cannot be SBX_POINTER_UNSET
+/// @param title  The desired title for the window, cannot be SBX_POINTER_UNSET
+/// @param width  The desired width for the window, cannot be SBX_DIMENSION_UNSET
+/// @param height The desired height for the window, cannot be SBX_DIMENSION_UNSET
+/// @return A SBXReport struct that reports the return state of the initialization function, this can be an error, or a success.
 ///         Possible errors include: SBX_WINDOW_ERROR_MISSING_ARGUMENT, SBX_WINDOW_ERROR_MEMORY_FAILURE,
 ///                                  SBX_WINDOW_ERROR_NOT_DEINIT, SBX_WINDOW_ERROR_GLFW_INIT_FAILED,
 ///                                  SBX_WINDOW_ERROR_HANDLE_INIT_FAILED, SBX_WINDOW_ERROR_CONTEXT_INIT_FAILED
-SBX_window_report_t SBXWindowInit(SBX_window_t* window,
+SBX_report_t SBXWindowInit(SBX_window_t* window,
                                   SBX_string_t title,
                                   SBX_window_dimensions_t width,
                                   SBX_window_dimensions_t height);
 
 /// @brief Destroys the window handle, deinitializes the OpenGl context, sets window deinit state flag, and unsets other state settings such as title, width, height, etc.
-/// @param window SBXWindow struct used to retrive, store, and check deinitialization related window data, cannot be NULL
-/// @return A SBXWindowReport struct that reports the return state of the deinitialization function, this can be an error, or a success
+/// @param window SBXWindow struct used to retrive, store, and check deinitialization related window data, cannot be SBX_POINTER_UNSET
+/// @return A SBXReport struct that reports the return state of the deinitialization function, this can be an error, or a success
 ///         Possible errors include: SBX_WINDOW_ERROR_MISSING_ARGUMENT, SBX_WINDOW_ERROR_NOT_INIT
-SBX_window_report_t SBXWindowDeinit(SBX_window_t* window);
+SBX_report_t SBXWindowDeinit(SBX_window_t* window);
 
 /// @note This function does not cache values
 /// @brief Gets the width and height of the supplied window and stores them in the supplied pointers, width and/or height can be NULL, on error width and height (if not NULL) will be set to 0
-/// @param window SBXWindow struct used to retrive, store, and check size query related window data, cannot be NULL
+/// @param window SBXWindow struct used to retrive, store, and check size query related window data, cannot be SBX_POINTER_UNSET
 /// @param width  A pointer to a SBX_window_dimensions_t variable to store window width in, can be NULL
 /// @param height A pointer to a SBX_window_dimensions_t variable to store window height in, can be NULL
-/// @return A SBXWindowReport struct that reports the return state of the size query function, this can be an error, or a success
+/// @return A SBXReport struct that reports the return state of the size query function, this can be an error, or a success
 ///         Possible errors include: SBX_WINDOW_ERROR_MISSING_ARGUMENT, SBX_WINDOW_ERROR_NOT_INIT,
 ///                                  SBX_WINDOW_ERROR_GET_SIZE_FAILED
-SBX_window_report_t SBXWindowGetSize(SBX_window_t* window, SBX_window_dimensions_t* width, SBX_window_dimensions_t* height);
+SBX_report_t SBXWindowGetSize(SBX_window_t* window, SBX_window_dimensions_t* width, SBX_window_dimensions_t* height);
 
-/// @brief Sets the width and height of the supplied window, width or height cannot be 0
-/// @param window SBXWindow struct used to retrive, store, and check size setting related window data, cannot be NULL
-/// @param width  The desired width for the window, cannot be 0
-/// @param height The desired height for the window, cannot be 0
-/// @return A SBXWindowReport struct that reports the return state of the size setting function, this can be an error, or a success
+/// @brief Sets the width and height of the supplied window, width or height cannot be SBX_DIMENSION_UNSET
+/// @param window SBXWindow struct used to retrive, store, and check size setting related window data, cannot be SBX_POINTER_UNSET
+/// @param width  The desired width for the window, cannot be SBX_DIMENSION_UNSET
+/// @param height The desired height for the window, cannot be SBX_DIMENSION_UNSET
+/// @return A SBXReport struct that reports the return state of the size setting function, this can be an error, or a success
 ///         Possible errors include: SBX_WINDOW_ERROR_MISSING_ARGUMENT, SBX_WINDOW_ERROR_NOT_INIT,
 ///                                  SBX_WINDOW_ERROR_SET_SIZE_FAILED
-SBX_window_report_t SBXWindowSetSize(SBX_window_t* window, SBX_window_dimensions_t width, SBX_window_dimensions_t height);
+SBX_report_t SBXWindowSetSize(SBX_window_t* window, SBX_window_dimensions_t width, SBX_window_dimensions_t height);
 
 /// @note This function does not cache values
 /// @brief Gets the title of the supplied window and stores it in the supplied pointer, on error title will be set to NULL
-/// @param window SBXWindow struct used to retrive, store, and check title query related window data, cannot be NULL
-/// @param title  A pointer to a SBX_string_t variable to store window title in, cannot be NULL
-/// @return A SBXWindowReport struct that reports the return state of the title query function, this can be an error, or a success
+/// @param window SBXWindow struct used to retrive, store, and check title query related window data, cannot be SBX_POINTER_UNSET
+/// @param title  A pointer to a SBX_string_t variable to store window title in, cannot be SBX_POINTER_UNSET
+/// @return A SBXReport struct that reports the return state of the title query function, this can be an error, or a success
 ///         Possible errors include: SBX_WINDOW_ERROR_MISSING_ARGUMENT, SBX_WINDOW_ERROR_NOT_INIT,
 ///                                  SBX_WINDOW_ERROR_GET_TITLE_FAILED
-SBX_window_report_t SBXWindowGetTitle(SBX_window_t* window, SBX_string_t* title);
+SBX_report_t SBXWindowGetTitle(SBX_window_t* window, SBX_string_t* title);
 
-/// @brief Sets the title of the supplied window, title cannot be NULL
-/// @param window SBXWindow struct used to retrive, store, and check title setting related window data, cannot be NULL
-/// @param title  The desired title for the window, cannot be NULL
-/// @return A SBXWindowReport struct that reports the return state of the title setting function, this can be an error, or a success
+/// @brief Sets the title of the supplied window, title cannot be SBX_POINTER_UNSET
+/// @param window SBXWindow struct used to retrive, store, and check title setting related window data, cannot be SBX_POINTER_UNSET
+/// @param title  The desired title for the window, cannot be SBX_POINTER_UNSET
+/// @return A SBXReport struct that reports the return state of the title setting function, this can be an error, or a success
 ///         Possible errors include: SBX_WINDOW_ERROR_MISSING_ARGUMENT, SBX_WINDOW_ERROR_NOT_INIT,
 ///                                  SBX_WINDOW_ERROR_SET_TITLE_FAILED
-SBX_window_report_t SBXWindowSetTitle(SBX_window_t* window, SBX_string_t title);
+SBX_report_t SBXWindowSetTitle(SBX_window_t* window, SBX_string_t title);
 
 #endif // SBX_WIDNOW_H

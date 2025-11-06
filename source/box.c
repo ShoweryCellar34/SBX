@@ -1,11 +1,11 @@
 // Project headers
-#include <SBX/plock.h>
+#include <SBX/box.h>
 #include <SBX/strings.h>
 
-// Plock creation function
-SBX_report_t SBXPlockCreate(SBX_plock_t** plock, SBX_color_t color, SBX_color_t color2) {
+// Box creation function
+SBX_report_t SBXBoxCreate(SBX_box_t** box) {
     // Check if required arguments are provided
-    if(!plock) {
+    if(!box) {
         // Return error
         return (SBX_report_t){
             .errorFlags    = SBX_COMMON_ERROR_MISSING_ARGUMENT,
@@ -13,11 +13,11 @@ SBX_report_t SBXPlockCreate(SBX_plock_t** plock, SBX_color_t color, SBX_color_t 
         };
     }
 
-    // Allocate memory for the SBXPlock struture
-    *plock = malloc(sizeof(SBX_plock_t));
+    // Allocate memory for the SBXBox struture
+    *box = malloc(sizeof(SBX_box_t));
 
     // Check for a memory allocation error
-    if(!*plock) {
+    if(!*box) {
         // Return error
         return (SBX_report_t){
             .errorFlags    = SBX_COMMON_ERROR_MEMORY_FAILURE,
@@ -25,9 +25,12 @@ SBX_report_t SBXPlockCreate(SBX_plock_t** plock, SBX_color_t color, SBX_color_t 
         };
     }
 
-    // Set SBXPlock members to values provided
-    (*plock)->color  = color;
-    (*plock)->color2 = color2;
+    // Set SBXBox members to values provided
+    (*box)->initialized = false;
+    (*box)->plocks      = SBX_POINTER_UNSET;
+    (*box)->title       = SBX_POINTER_UNSET;
+    (*box)->width       = SBX_DIMENSION_UNSET;
+    (*box)->height      = SBX_DIMENSION_UNSET;
 
     return (SBX_report_t){
         .errorFlags    = 0,
@@ -36,17 +39,25 @@ SBX_report_t SBXPlockCreate(SBX_plock_t** plock, SBX_color_t color, SBX_color_t 
 }
 
 // Window destruction function
-SBX_report_t SBXPlockDestroy(SBX_plock_t* plock) {
+SBX_report_t SBXBoxDestroy(SBX_box_t* box) {
     // Check if required arguments are provided
-    if(!plock) {
+    if(!box) {
         // Return error
         return (SBX_report_t){
             .errorFlags    = SBX_COMMON_ERROR_MISSING_ARGUMENT,
             .reportMessage = SBX_REPORT_STRING_COMMON_MISSING_ARGUMENT
         };
     }
+    // Check for box not already initialized
+    if(box->initialized) {
+        // Return error
+        return (SBX_report_t){
+            .errorFlags    = SBX_BOX_ERROR_NOT_DEINIT,
+            .reportMessage = SBX_REPORT_STRING_BOX_NOT_DEINIT
+        };
+    }
 
-    free(plock);
+    free(box);
 
     return (SBX_report_t){
         .errorFlags    = 0,

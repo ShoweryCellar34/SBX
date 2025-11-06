@@ -32,4 +32,10 @@
 #define SBX_REPORT_STRING_WINDOW_SET_SIZE_SUCCESSFUL  "Successfuly set window size"
 #define SBX_REPORT_STRING_WINDOW_SET_TITLE_SUCCESSFUL "Successfuly set window title"
 
+// SBXBox error strings
+#define SBX_REPORT_STRING_BOX_ALREADY_INIT            "Box already initialized"
+#define SBX_REPORT_STRING_BOX_ALREADY_DEINIT          "Box already deinitialized"
+#define SBX_REPORT_STRING_BOX_NOT_INIT                "Box not initialized"
+#define SBX_REPORT_STRING_BOX_NOT_DEINIT              "Box not deinitialized"
+
 #endif // SBX_STRINGS_H

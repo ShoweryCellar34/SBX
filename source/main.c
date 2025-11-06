@@ -25,7 +25,7 @@ int main(int argc, char* argv[]) {
 
     // Create the window
     SBX_window_t* window = NULL;
-    SBX_window_report_t windowReport = SBXWindowCreate(&window);
+    SBX_report_t windowReport = SBXWindowCreate(&window);
     // Check if window was created properly
     if(windowReport.errorFlags) {
         printf("Failed to create window: %s", windowReport.reportMessage);
