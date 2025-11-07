@@ -20,16 +20,16 @@
 #define SBX_REPORT_STRING_WINDOW_CONTEXT_FAILED       "Failed to initialize OpenGL context"
 
 #define SBX_REPORT_STRING_WINDOW_GET_SIZE_FAILED      "Getting window size failed"
-#define SBX_REPORT_STRING_WINDOW_GET_TITLE_FAILED     "Getting window title failed"
 #define SBX_REPORT_STRING_WINDOW_SET_SIZE_FAILED      "Setting window size failed"
+#define SBX_REPORT_STRING_WINDOW_GET_TITLE_FAILED     "Getting window title failed"
 #define SBX_REPORT_STRING_WINDOW_SET_TITLE_FAILED     "Setting window title failed"
 
 // SBXWindow success strings
 #define SBX_REPORT_STRING_WINDOW_INIT_SUCCESSFUL      "Successfuly initialized window"
 #define SBX_REPORT_STRING_WINDOW_DEINIT_SUCCESSFUL    "Successfuly deinitialized window"
 #define SBX_REPORT_STRING_WINDOW_GET_SIZE_SUCCESSFUL  "Successfuly got window size"
-#define SBX_REPORT_STRING_WINDOW_GET_TITLE_SUCCESSFUL "Successfuly got window title"
 #define SBX_REPORT_STRING_WINDOW_SET_SIZE_SUCCESSFUL  "Successfuly set window size"
+#define SBX_REPORT_STRING_WINDOW_GET_TITLE_SUCCESSFUL "Successfuly got window title"
 #define SBX_REPORT_STRING_WINDOW_SET_TITLE_SUCCESSFUL "Successfuly set window title"
 
 // SBXBox error strings
@@ -37,5 +37,11 @@
 #define SBX_REPORT_STRING_BOX_ALREADY_DEINIT          "Box already deinitialized"
 #define SBX_REPORT_STRING_BOX_NOT_INIT                "Box not initialized"
 #define SBX_REPORT_STRING_BOX_NOT_DEINIT              "Box not deinitialized"
+
+// SBXBox success strings
+#define SBX_REPORT_STRING_BOX_INIT_SUCCESSFUL      "Successfuly initialized box"
+#define SBX_REPORT_STRING_BOX_DEINIT_SUCCESSFUL    "Successfuly deinitialized box"
+#define SBX_REPORT_STRING_BOX_GET_SIZE_SUCCESSFUL  "Successfuly got box size"
+#define SBX_REPORT_STRING_BOX_SET_SIZE_SUCCESSFUL  "Successfuly set box size"
 
 #endif // SBX_STRINGS_H

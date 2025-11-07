@@ -17,6 +17,12 @@ void errorCallback(int errorCode, const char* description) {
 }
 
 int main(int argc, char* argv[]) {
+    // Create the report struct we will use for error checking
+    SBX_report_t report = {
+        .errorFlags    = 0,
+        .reportMessage = NULL
+    };
+
     // Set error callback for GLFW
     glfwSetErrorCallback(errorCallback);
 
@@ -25,20 +31,52 @@ int main(int argc, char* argv[]) {
 
     // Create the window
     SBX_window_t* window = NULL;
-    SBX_report_t windowReport = SBXWindowCreate(&window);
+    report = SBXWindowCreate(&window);
     // Check if window was created properly
-    if(windowReport.errorFlags) {
-        printf("Failed to create window: %s", windowReport.reportMessage);
+    if(report.errorFlags) {
+        printf("Failed to create window: %s", report.reportMessage);
         glfwTerminate();
         return 1;
     }
 
     // Initialize window
-    windowReport = SBXWindowInit(window, "SBX", 1200, 675);
+    report = SBXWindowInit(window, "SBX", 1200, 675);
     // Check if window was initialized properly
-    if(windowReport.errorFlags) {
-        printf("Failed to initialize window: %s", windowReport.reportMessage);
+    if(report.errorFlags) {
+        printf("Failed to initialize window: %s", report.reportMessage);
+        SBXWindowDestroy(window);
         glfwTerminate();
+        return 1;
+    }
+
+    // Create the box
+    SBX_box_t* box = NULL;
+    report = SBXBoxCreate(&box);
+    // Check if box was created properly
+    if(report.errorFlags) {
+        printf("Failed to create sandbox: %s", report.reportMessage);
+
+        // Deinit window and glfw first, and don't worry about errors as we are already exiting
+        report = SBXWindowDeinit(window);
+        report = SBXWindowDestroy(window);
+        glfwTerminate();
+
+        return 1;
+    }
+
+    // Initialize box
+    report = SBXBoxInit(box, 32, 16);
+    // Check if window was initialized properly
+    if(report.errorFlags) {
+        printf("Failed to initialize box: %s", report.reportMessage);
+        // Destroy box object, and don't worry about errors as we are already exiting
+        SBXBoxDestroy(box);
+
+        // Deinit and destroy window and terminate glfw first, and don't worry about errors as we are already exiting
+        SBXWindowDeinit(window);
+        SBXWindowDestroy(window);
+        glfwTerminate();
+
         return 1;
     }
 
@@ -52,23 +90,15 @@ int main(int argc, char* argv[]) {
         glfwPollEvents();
     }
 
-    // Deinit window
-    windowReport = SBXWindowDeinit(window);
-    // Check if window was deinitialized properly
-    if(windowReport.errorFlags) {
-        printf("Failed to deinitialize window: %s", windowReport.reportMessage);
-        glfwTerminate();
-        return 1;
-    }
+    // No error check as we are already exiting
 
-    // Destroy window
-    windowReport = SBXWindowDestroy(window);
-    // Check if window was destroyed properly
-    if(windowReport.errorFlags) {
-        printf("Failed to destroy window: %s", windowReport.reportMessage);
-        glfwTerminate();
-        return 1;
-    }
+    // Deinit and destroy box
+    SBXBoxDeinit(box);
+    SBXBoxDestroy(box);
+
+    // Deinit and destroy window
+    SBXWindowDeinit(window);
+    SBXWindowDestroy(window);
 
     // Terminate GLFW
     glfwTerminate();

@@ -160,7 +160,6 @@ SBX_report_t SBXWindowInit(SBX_window_t* window,
     };
 }
 
-
 // Window deinitialization function
 SBX_report_t SBXWindowDeinit(SBX_window_t* window) {
     // Check if required arguments are provided

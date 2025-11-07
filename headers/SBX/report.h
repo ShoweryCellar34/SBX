@@ -38,13 +38,13 @@ enum SBXErrorFlags {
     SBX_WINDOW_ERROR_HANDLE_INIT_FAILED  = 1 << 7,
     /// @brief This error is generated when creating the glad OpenGL context fails
     SBX_WINDOW_ERROR_CONTEXT_INIT_FAILED = 1 << 8,
-    /// @brief This error is generated when getting the window size fails
+    /// @brief This error is generated when the getting GLFW command the window size fails
     SBX_WINDOW_ERROR_GET_SIZE_FAILED     = 1 << 9,
-    /// @brief This error is generated when setting the window size fails
+    /// @brief This error is generated when the setting GLFW command the window size fails
     SBX_WINDOW_ERROR_SET_SIZE_FAILED     = 1 << 10,
-    /// @brief This error is generated when getting the window title fails
+    /// @brief This error is generated when the getting GLFW command the window title fails
     SBX_WINDOW_ERROR_GET_TITLE_FAILED    = 1 << 11,
-    /// @brief This error is generated when setting the window title fails
+    /// @brief This error is generated when the setting GLFW command the window title fails
     SBX_WINDOW_ERROR_SET_TITLE_FAILED    = 1 << 12,
 
     // Box error flags
@@ -57,19 +57,8 @@ enum SBXErrorFlags {
     SBX_BOX_ERROR_ALREADY_INIT           = 1 << 15,
     /// @brief This error is generated when the box is already deinitialized when an operation tries to deinitialize it
     SBX_BOX_ERROR_ALREADY_DEINIT         = 1 << 16,
-    /// @brief This error is generated when getting the box size fails
-    SBX_BOX_ERROR_GET_SIZE_FAILED     = 1 << 17,
-    /// @brief This error is generated when setting the box size fails
-    SBX_BOX_ERROR_SET_SIZE_FAILED     = 1 << 18,
-    /// @brief This error is generated when getting the box title fails
-    SBX_BOX_ERROR_GET_TITLE_FAILED    = 1 << 19,
-    /// @brief This error is generated when setting the box title fails
-    SBX_BOX_ERROR_SET_TITLE_FAILED    = 1 << 20,
 
     // Plock error flags
-
-    SBX_PLOCK_ERROR_GET_FAILED           = 1 << 21,
-    SBX_PLOCK_ERROR_SET_FAILED           = 1 << 22
 };
 
 #endif // SBX_REPORT_H
