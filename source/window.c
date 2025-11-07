@@ -4,7 +4,7 @@
 #include <SBX/strings.h>
 
 // Dependency headers
-#include <glfw/glfw3native.h>
+#include <GLFW/glfw3.h>
 
 // LibC headers
 #include <stdlib.h>
