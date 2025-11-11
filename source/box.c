@@ -204,11 +204,9 @@ SBX_report_t SBXBoxSetSize(SBX_box_t* box, SBX_box_dimensions_t width, SBX_box_d
         };
     }
 
-    // FIX THIS, THERE ARE SO MANY ISSUES
-
     // Copy rows into new buffer
-    for(SBX_box_dimensions_t i = 0; i < height; i++) {
-        memcpy(&temp[i * width], &box->plocks[i * box->width], width * sizeof(SBX_plock_id_t));
+    for(SBX_box_dimensions_t i = 0; i < min(height, box->height); i++) {
+        memcpy(&temp[i * width], &box->plocks[i * box->width], min(width, box->width) * sizeof(SBX_plock_id_t));
     }
 
     // Free the old buffer and set the pointer to the new buffer
