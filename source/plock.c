@@ -2,10 +2,10 @@
 #include <SBX/plock.h>
 #include <SBX/strings.h>
 
-// Plock creation function
-SBX_report_t SBXPlockCreate(SBX_plock_t** plock, SBX_color_t color, SBX_color_t color2) {
+// Plock type creation function
+SBX_report_t SBXPlockTypeCreate(SBX_plock_type_t** plockType, SBX_color_t color) {
     // Check if required arguments are provided
-    if(!plock) {
+    if(!plockType) {
         // Return error
         return (SBX_report_t){
             .errorFlags    = SBX_COMMON_ERROR_MISSING_ARGUMENT,
@@ -14,10 +14,10 @@ SBX_report_t SBXPlockCreate(SBX_plock_t** plock, SBX_color_t color, SBX_color_t 
     }
 
     // Allocate memory for the SBXPlock struture
-    *plock = malloc(sizeof(SBX_plock_t));
+    *plockType = malloc(sizeof(SBX_plock_type_t));
 
     // Check for a memory allocation error
-    if(!*plock) {
+    if(!*plockType) {
         // Return error
         return (SBX_report_t){
             .errorFlags    = SBX_COMMON_ERROR_MEMORY_FAILURE,
@@ -25,20 +25,19 @@ SBX_report_t SBXPlockCreate(SBX_plock_t** plock, SBX_color_t color, SBX_color_t 
         };
     }
 
-    // Set SBXPlock members to values provided
-    (*plock)->color  = color;
-    (*plock)->color2 = color2;
+    // Set SBXPlockType members to values provided
+    (*plockType)->color = color;
 
     return (SBX_report_t){
         .errorFlags    = 0,
-        .reportMessage = SBX_REPORT_STRING_CREATION_SUCCESSFUL
+        .reportMessage = SBX_REPORT_STRING_COMMON_CREATION_SUCCESSFUL
     };
 }
 
-// Window destruction function
-SBX_report_t SBXPlockDestroy(SBX_plock_t* plock) {
+// Plock type destruction function
+SBX_report_t SBXPlockTypeDestroy(SBX_plock_type_t* plockType) {
     // Check if required arguments are provided
-    if(!plock) {
+    if(!plockType) {
         // Return error
         return (SBX_report_t){
             .errorFlags    = SBX_COMMON_ERROR_MISSING_ARGUMENT,
@@ -46,10 +45,10 @@ SBX_report_t SBXPlockDestroy(SBX_plock_t* plock) {
         };
     }
 
-    free(plock);
+    free(plockType);
 
     return (SBX_report_t){
         .errorFlags    = 0,
-        .reportMessage = SBX_REPORT_STRING_DESTRUCTION_SUCCESSFUL
+        .reportMessage = SBX_REPORT_STRING_COMMON_DESTRUCTION_SUCCESSFUL
     };
 }

@@ -40,7 +40,7 @@ SBX_report_t SBXWindowCreate(SBX_window_t** window) {
 
     return (SBX_report_t){
         .errorFlags    = 0,
-        .reportMessage = SBX_REPORT_STRING_CREATION_SUCCESSFUL
+        .reportMessage = SBX_REPORT_STRING_COMMON_CREATION_SUCCESSFUL
     };
 }
 
@@ -67,7 +67,7 @@ SBX_report_t SBXWindowDestroy(SBX_window_t* window) {
 
     return (SBX_report_t){
         .errorFlags    = 0,
-        .reportMessage = SBX_REPORT_STRING_DESTRUCTION_SUCCESSFUL
+        .reportMessage = SBX_REPORT_STRING_COMMON_DESTRUCTION_SUCCESSFUL
     };
 }
 

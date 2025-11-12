@@ -37,7 +37,7 @@ SBX_report_t SBXBoxCreate(SBX_box_t** box) {
 
     return (SBX_report_t){
         .errorFlags    = 0,
-        .reportMessage = SBX_REPORT_STRING_CREATION_SUCCESSFUL
+        .reportMessage = SBX_REPORT_STRING_COMMON_CREATION_SUCCESSFUL
     };
 }
 
@@ -64,7 +64,7 @@ SBX_report_t SBXBoxDestroy(SBX_box_t* box) {
 
     return (SBX_report_t){
         .errorFlags    = 0,
-        .reportMessage = SBX_REPORT_STRING_DESTRUCTION_SUCCESSFUL
+        .reportMessage = SBX_REPORT_STRING_COMMON_DESTRUCTION_SUCCESSFUL
     };
 }
 
