@@ -57,6 +57,8 @@ enum SBXErrorFlags {
     SBX_BOX_ERROR_ALREADY_INIT           = 1 << 15,
     /// @brief This error is generated when the box is already deinitialized when an operation tries to deinitialize it
     SBX_BOX_ERROR_ALREADY_DEINIT         = 1 << 16,
+    /// @brief This error is generated when creating the plocks fails
+    SBX_BOX_ERROR_PLOCKS_INIT_FAILED     = 1 << 17
 
     // Plock error flags
 };

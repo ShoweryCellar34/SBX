@@ -25,7 +25,7 @@ typedef struct SBXPlockType     SBX_plock_type_t;
 typedef uint8_t                 SBX_plock_type_id_t;
 typedef struct SBXPlock         SBX_plock_t;
 typedef uint32_t                SBX_plock_count_t;
-typedef uint16_t                SBX_plock_id_t;
+typedef uint32_t                SBX_plock_id_t;
 typedef long double             SBX_plock_temperature_t;
 
 #define SBX_MAX_PLOCK_COUNT     UINT32_MAX

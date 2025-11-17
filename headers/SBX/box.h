@@ -15,7 +15,7 @@ struct SBXBox {
                          height;
 
     // Plocks
-    SBX_plock_id_t*      plocks;
+    SBX_plock_t*         plocks;
 };
 
 /// @brief Allocates memory for a SBXBox object and then sets values according to the provided settings, on error the address pointed to by the SBX_box_t** will be set to NULL

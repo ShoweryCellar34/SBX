@@ -1,6 +1,7 @@
 // Project headers
 #include <SBX/box.h>
 #include <SBX/strings.h>
+#include <SBX/plock.h>
 
 // LibC headers
 #include <stdlib.h>
@@ -93,15 +94,15 @@ SBX_report_t SBXBoxInit(SBX_box_t* box,
     box->width  = width;
     box->height = height;
 
-    // Create an array of plock ids to store all plocks
-    box->plocks = malloc(box->width * box->height * sizeof(SBX_plock_id_t));
+    // Create plock array
+    SBX_report_t report = SBXPlocksCreate(&box->plocks, box->width * box->height);
 
-    // Check if plock id array creation failed
-    if(!box->plocks) {
+    // Check if plock array creation failed
+    if(report.errorFlags) {
         // Return error
         return (SBX_report_t){
-            .errorFlags    = SBX_COMMON_ERROR_MEMORY_FAILURE,
-            .reportMessage = SBX_REPORT_STRING_COMMON_MEMORY_FAILURE
+            .errorFlags    = SBX_BOX_ERROR_PLOCKS_INIT_FAILED,
+            .reportMessage = SBX_REPORT_STRING_BOX_PLOCKS_FAILED
         };
     }
 
@@ -132,9 +133,9 @@ SBX_report_t SBXBoxDeinit(SBX_box_t* box) {
         };
     }
 
-    // Check if plocks id array exists, then destroy it and set pointer to NULL
+    // Check if plock array exists, then destroy them and set pointer to NULL
     if(box->plocks) {
-        free(box->plocks);
+        SBXPlocksDestroy(box->plocks, box->width * box->height);
         box->plocks = NULL;
     }
 
@@ -194,24 +195,17 @@ SBX_report_t SBXBoxSetSize(SBX_box_t* box, SBX_box_dimensions_t width, SBX_box_d
         };
     }
 
-    // Allocate temp memory for new box
-    SBX_plock_id_t* temp = malloc(width * height * sizeof(SBX_plock_id_t));
-    if(!temp) {
+    // Resize plock array
+    SBX_report_t report = SBXPlocksRecreate(&box->plocks, box->width * box->height, width * height);
+
+    // Check if plock array recreation failed
+    if(report.errorFlags) {
         // Return error
         return (SBX_report_t){
-            .errorFlags    = SBX_COMMON_ERROR_MEMORY_FAILURE,
-            .reportMessage = SBX_REPORT_STRING_COMMON_MEMORY_FAILURE
+            .errorFlags    = SBX_BOX_ERROR_PLOCKS_INIT_FAILED,
+            .reportMessage = SBX_REPORT_STRING_BOX_PLOCKS_FAILED
         };
     }
-
-    // Copy rows into new buffer
-    for(SBX_box_dimensions_t i = 0; i < min(height, box->height); i++) {
-        memcpy(&temp[i * width], &box->plocks[i * box->width], min(width, box->width) * sizeof(SBX_plock_id_t));
-    }
-
-    // Free the old buffer and set the pointer to the new buffer
-    free(box->plocks);
-    box->plocks = temp;
 
     // Set box parameters
     box->width  = width;

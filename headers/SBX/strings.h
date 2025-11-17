@@ -7,6 +7,7 @@
 
 // Common success string
 #define SBX_REPORT_STRING_COMMON_CREATION_SUCCESSFUL    "Successfuly created/allocated object"
+#define SBX_REPORT_STRING_COMMON_RECREATION_SUCCESSFUL  "Successfuly recreated/reallocated object"
 #define SBX_REPORT_STRING_COMMON_DESTRUCTION_SUCCESSFUL "Successfuly destroyed/freed object"
 
 // SBXwindow error strings
@@ -37,6 +38,7 @@
 #define SBX_REPORT_STRING_BOX_ALREADY_DEINIT            "Box already deinitialized"
 #define SBX_REPORT_STRING_BOX_NOT_INIT                  "Box not initialized"
 #define SBX_REPORT_STRING_BOX_NOT_DEINIT                "Box not deinitialized"
+#define SBX_REPORT_STRING_BOX_PLOCKS_FAILED             "Failed to create plocks"
 
 // SBXBox success strings
 #define SBX_REPORT_STRING_BOX_INIT_SUCCESSFUL           "Successfuly initialized box"

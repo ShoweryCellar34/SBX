@@ -20,10 +20,10 @@ struct SBXPlock {
     SBX_plock_temperature_t temperature;
 };
 
-SBX_report_t SBXPlocksCreate(SBX_plock_t*** plocks, SBX_plock_count_t count);
+SBX_report_t SBXPlocksCreate(SBX_plock_t** plocks, SBX_plock_count_t count);
 
-SBX_report_t SBXPlocksRecreate(SBX_plock_t*** plocks, SBX_plock_count_t oldCount, SBX_plock_count_t newCount);
+SBX_report_t SBXPlocksRecreate(SBX_plock_t** plocks, SBX_plock_count_t oldCount, SBX_plock_count_t newCount);
 
-SBX_report_t SBXPlocksDestroy(SBX_plock_t** plocks, SBX_plock_count_t count);
+SBX_report_t SBXPlocksDestroy(SBX_plock_t* plocks, SBX_plock_count_t count);
 
 #endif // SBX_PLOCK_H
