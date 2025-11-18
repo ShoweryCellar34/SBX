@@ -14,16 +14,26 @@ SBX_report_t SBXPlockTypeCreate(SBX_plock_type_t** plockType, SBX_color_t color)
 
 SBX_report_t SBXPlockTypeDestroy(SBX_plock_type_t* plockType);
 
-/// @brief Structure used by SBXPlock(s) functions to store plock type, temperature, and more data to represent a plock
+/// @brief Structure used by SBXPlock functions to store plock type, temperature, and more data to represent a plock
 struct SBXPlock {
+    /// @brief The plock type, this will map to a SBXPlockType object
     SBX_plock_type_id_t     type;
+
+    /// @brief The temperature of the plock
     SBX_plock_temperature_t temperature;
 };
 
-SBX_report_t SBXPlocksCreate(SBX_plock_t** plocks, SBX_plock_count_t count);
+/// @brief Structure used by SBXPlockArray functions to store plocks to represent a plock array
+struct SBXPlockArray {
+    /// @brief Pointer to an array of plocks
+    SBX_plock_t*      plocks;
 
-SBX_report_t SBXPlocksRecreate(SBX_plock_t** plocks, SBX_plock_count_t oldCount, SBX_plock_count_t newCount);
+    /// @brief The count of plocks in the array (not bytes)
+    SBX_plock_count_t count;
+};
 
-SBX_report_t SBXPlocksDestroy(SBX_plock_t* plocks, SBX_plock_count_t count);
+SBX_report_t SBXPlocksCreate(SBX_plock_array_t** plockArray);
+
+SBX_report_t SBXPlocksDestroy(SBX_plock_array_t* plockArray);
 
 #endif // SBX_PLOCK_H
