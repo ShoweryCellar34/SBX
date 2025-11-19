@@ -2,98 +2,30 @@
 #include <SBX/plock.h>
 #include <SBX/strings.h>
 
-// Plock type creation function
-SBX_report_t SBXPlockTypeCreate(SBX_plock_type_t** plockType, SBX_color_t color) {
+SBX_report_t SBXPlockArrayGetSize(SBX_plock_array_t* plockArray, SBX_plock_count_t* count) {
     // Check if required arguments are provided
-    if(!plockType) {
-        // Return error
-        return (SBX_report_t){
-            .errorFlags    = SBX_COMMON_ERROR_MISSING_ARGUMENT,
-            .reportMessage = SBX_REPORT_STRING_COMMON_MISSING_ARGUMENT
-        };
-    }
-
-    // Allocate memory for the SBXPlock struture
-    *plockType = malloc(sizeof(SBX_plock_type_t));
-
-    // Check for a memory allocation error
-    if(!*plockType) {
-        // Return error
-        return (SBX_report_t){
-            .errorFlags    = SBX_COMMON_ERROR_MEMORY_FAILURE,
-            .reportMessage = SBX_REPORT_STRING_COMMON_MEMORY_FAILURE
-        };
-    }
-
-    // Set SBXPlockType members to values provided
-    (*plockType)->color = color;
-
-    return (SBX_report_t){
-        .errorFlags    = 0,
-        .reportMessage = SBX_REPORT_STRING_COMMON_CREATION_SUCCESSFUL
-    };
-}
-
-// Plock type destruction function
-SBX_report_t SBXPlockTypeDestroy(SBX_plock_type_t* plockType) {
-    // Check if required arguments are provided
-    if(!plockType) {
-        // Return error
-        return (SBX_report_t){
-            .errorFlags    = SBX_COMMON_ERROR_MISSING_ARGUMENT,
-            .reportMessage = SBX_REPORT_STRING_COMMON_MISSING_ARGUMENT
-        };
-    }
-
-    free(plockType);
-
-    return (SBX_report_t){
-        .errorFlags    = 0,
-        .reportMessage = SBX_REPORT_STRING_COMMON_DESTRUCTION_SUCCESSFUL
-    };
-}
-
-// Plock creation function
-SBX_report_t SBXPlocksCreate(SBX_plock_t** plocks, SBX_plock_count_t count) {
-    // Check if required arguments are provided
-    if(!(plocks || count)) {
-        // Return error
-        return (SBX_report_t){
-            .errorFlags    = SBX_COMMON_ERROR_MISSING_ARGUMENT,
-            .reportMessage = SBX_REPORT_STRING_COMMON_MISSING_ARGUMENT
-        };
-    }
-
-    // Allocate memory for the SBXPlock struture
-    SBX_plock_t* plockArray = malloc(sizeof(SBX_plock_t) * count);
-
-    // Check for a memory allocation error
     if(!plockArray) {
         // Return error
         return (SBX_report_t){
-            .errorFlags    = SBX_COMMON_ERROR_MEMORY_FAILURE,
-            .reportMessage = SBX_REPORT_STRING_COMMON_MEMORY_FAILURE
+            .errorFlags    = SBX_COMMON_ERROR_MISSING_ARGUMENT,
+            .reportMessage = SBX_REPORT_STRING_COMMON_MISSING_ARGUMENT
         };
     }
 
-    // Set SBXPlock members to values unset
-    for(SBX_plock_count_t i = 0; i < count; i++) {
-        plockArray[i].temperature = SBX_TEMPERATURE_UNSET;
-        plockArray[i].type        = SBX_PLOCK_TYPE_ID_UNSET;
+    if(count) {
+        *count = plockArray->count;
     }
 
-    // Set the provided pointer to the allocated plock array
-    *plocks = plockArray;
-
+    // Return success
     return (SBX_report_t){
         .errorFlags    = 0,
-        .reportMessage = SBX_REPORT_STRING_COMMON_CREATION_SUCCESSFUL
+        .reportMessage = SBX_REPORT_STRING_PLOCK_ARRAY_GET_SIZE_SUCCESSFUL
     };
 }
 
-SBX_report_t SBXPlocksRecreate(SBX_plock_t** plocks, SBX_plock_count_t oldCount, SBX_plock_count_t newCount) {
+SBX_report_t SBXPlockArraySetSize(SBX_plock_array_t* plockArray, SBX_plock_count_t count) {
     // Check if required arguments are provided
-    if(!(plocks || oldCount || newCount)) {
+    if(!(plockArray)) {
         // Return error
         return (SBX_report_t){
             .errorFlags    = SBX_COMMON_ERROR_MISSING_ARGUMENT,
@@ -101,11 +33,26 @@ SBX_report_t SBXPlocksRecreate(SBX_plock_t** plocks, SBX_plock_count_t oldCount,
         };
     }
 
-    // Allocate memory for the SBXPlock struture
-    SBX_plock_t* plockArray = realloc(*plocks, sizeof(SBX_plock_t) * newCount);
+    // If count is 0 destroy the array
+    if(!count && plockArray->plocks) {
+        free(plockArray->plocks);
+        plockArray->count = 0;
+
+        return (SBX_report_t){
+            .errorFlags    = 0,
+            .reportMessage = SBX_REPORT_STRING_PLOCK_ARRAY_SET_SIZE_SUCCESSFUL
+        };
+    }
+
+    // Allocate memory for the internal array in the SBXPlockArray structure
+    if(plockArray->plocks) {
+        plockArray->plocks = realloc(plockArray->plocks, sizeof(SBX_plock_t) * count);
+    } else {
+        plockArray->plocks = malloc(sizeof(SBX_plock_t) * count);
+    }
 
     // Check for a memory allocation error
-    if(!plockArray) {
+    if(!plockArray->plocks) {
         // Return error
         return (SBX_report_t){
             .errorFlags    = SBX_COMMON_ERROR_MEMORY_FAILURE,
@@ -113,24 +60,26 @@ SBX_report_t SBXPlocksRecreate(SBX_plock_t** plocks, SBX_plock_count_t oldCount,
         };
     }
 
-    // Set SBXPlock members to values unset
-    for(SBX_plock_count_t i = oldCount - 1; i < newCount; i++) {
-        plockArray[i].temperature = SBX_TEMPERATURE_UNSET;
-        plockArray[i].type        = SBX_PLOCK_TYPE_ID_UNSET;
+    // Set SBXPlockArray unset internal array members to values unset
+    for(SBX_plock_count_t i = plockArray->count; i < count; i++) {
+        plockArray->plocks[i].temperature = SBX_TEMPERATURE_UNSET;
+        plockArray->plocks[i].type        = SBX_PLOCK_TYPE_ID_UNSET;
     }
 
-    // Set the provided pointer to the reallocated plock array
-    *plocks = plockArray;
+    // Update the count variable in the SBXPlockArray
+    plockArray->count = count;
 
     return (SBX_report_t){
         .errorFlags    = 0,
-        .reportMessage = SBX_REPORT_STRING_COMMON_RECREATION_SUCCESSFUL
+        .reportMessage = SBX_REPORT_STRING_PLOCK_ARRAY_SET_SIZE_SUCCESSFUL
     };
 }
 
-SBX_report_t SBXPlocksDestroy(SBX_plock_t* plocks, SBX_plock_count_t count) {
+SBX_report_t SBXPlockIDMatrixGetSize(SBX_plock_id_matrix_t* plockIDMatrix,
+                                     SBX_plock_id_matrix_dimensions_t* width, SBX_plock_id_matrix_dimensions_t* height)
+{
     // Check if required arguments are provided
-    if(!plocks) {
+    if(!plockIDMatrix) {
         // Return error
         return (SBX_report_t){
             .errorFlags    = SBX_COMMON_ERROR_MISSING_ARGUMENT,
@@ -138,10 +87,70 @@ SBX_report_t SBXPlocksDestroy(SBX_plock_t* plocks, SBX_plock_count_t count) {
         };
     }
 
-    free(plocks);
+    if(width) {
+        *width = plockIDMatrix->width;
+    }
+    if(height) {
+        *height = plockIDMatrix->height;
+    }
+
+    // Return success
+    return (SBX_report_t){
+        .errorFlags    = 0,
+        .reportMessage = SBX_REPORT_STRING_PLOCK_ID_MATRIX_GET_SIZE_SUCCESSFUL
+    };
+}
+
+SBX_report_t SBXPlockIDMatrixSetSize(SBX_plock_id_matrix_t* plockIDMatrix,
+                                     SBX_plock_id_matrix_dimensions_t width, SBX_plock_id_matrix_dimensions_t height)
+{
+    // Check if required arguments are provided
+    if(!(plockIDMatrix)) {
+        // Return error
+        return (SBX_report_t){
+            .errorFlags    = SBX_COMMON_ERROR_MISSING_ARGUMENT,
+            .reportMessage = SBX_REPORT_STRING_COMMON_MISSING_ARGUMENT
+        };
+    }
+
+    // If width or height is 0 destroy the matrix
+    if(!(width || height) && plockIDMatrix->plockIDs) {
+        free(plockIDMatrix->plockIDs);
+        plockIDMatrix->height = 0;
+
+        return (SBX_report_t){
+            .errorFlags    = 0,
+            .reportMessage = SBX_REPORT_STRING_PLOCK_ID_MATRIX_SET_SIZE_SUCCESSFUL
+        };
+    }
+
+    // Allocate memory for the internal array in the SBXPlockArray structure
+    if(plockIDMatrix->plockIDs) {
+        plockIDMatrix = realloc(plockIDMatrix->plockIDs, sizeof(SBX_plock_t) * width * height);
+    } else {
+        plockIDMatrix = malloc(sizeof(SBX_plock_t) * width * height);
+    }
+
+    // Check for a memory allocation error
+    if(!plockIDMatrix->plockIDs) {
+        // Return error
+        return (SBX_report_t){
+            .errorFlags    = SBX_COMMON_ERROR_MEMORY_FAILURE,
+            .reportMessage = SBX_REPORT_STRING_COMMON_MEMORY_FAILURE
+        };
+    }
+
+    // Set SBXPlockArray unset internal array members to values unset
+    for(SBX_plock_count_t i = plockArray->count; i < count; i++) {
+        plockArray->plocks[i].temperature = SBX_TEMPERATURE_UNSET;
+        plockArray->plocks[i].type        = SBX_PLOCK_TYPE_ID_UNSET;
+    }
+
+    // Update the count variable in the SBXPlockArray
+    plockArray->count = count;
 
     return (SBX_report_t){
         .errorFlags    = 0,
-        .reportMessage = SBX_REPORT_STRING_COMMON_DESTRUCTION_SUCCESSFUL
+        .reportMessage = SBX_REPORT_STRING_PLOCK_ARRAY_SET_SIZE_SUCCESSFUL
     };
 }

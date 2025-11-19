@@ -101,7 +101,7 @@ int main(int argc, char* argv[]) {
     // Print the plocks in the box
     for(SBX_box_dimensions_t y = 0; y < boxHeight; y++) {
         for(SBX_box_dimensions_t x = 0; x < boxWidth; x++) {
-            printf("%i ", box->plocks[y * boxWidth + x].type);
+            printf("%i ", box->plockArray.plocks[y * boxWidth + x].type);
         }
         printf("\n");
     }

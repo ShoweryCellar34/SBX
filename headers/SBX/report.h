@@ -38,13 +38,13 @@ enum SBXErrorFlags {
     SBX_WINDOW_ERROR_HANDLE_INIT_FAILED  = 1 << 7,
     /// @brief This error is generated when creating the glad OpenGL context fails
     SBX_WINDOW_ERROR_CONTEXT_INIT_FAILED = 1 << 8,
-    /// @brief This error is generated when the getting GLFW command the window size fails
+    /// @brief This error is generated when the getting the window size fails
     SBX_WINDOW_ERROR_GET_SIZE_FAILED     = 1 << 9,
-    /// @brief This error is generated when the setting GLFW command the window size fails
+    /// @brief This error is generated when the setting the window size fails
     SBX_WINDOW_ERROR_SET_SIZE_FAILED     = 1 << 10,
-    /// @brief This error is generated when the getting GLFW command the window title fails
+    /// @brief This error is generated when the getting the window title fails
     SBX_WINDOW_ERROR_GET_TITLE_FAILED    = 1 << 11,
-    /// @brief This error is generated when the setting GLFW command the window title fails
+    /// @brief This error is generated when the setting the window title fails
     SBX_WINDOW_ERROR_SET_TITLE_FAILED    = 1 << 12,
 
     // Box error flags
@@ -57,8 +57,13 @@ enum SBXErrorFlags {
     SBX_BOX_ERROR_ALREADY_INIT           = 1 << 15,
     /// @brief This error is generated when the box is already deinitialized when an operation tries to deinitialize it
     SBX_BOX_ERROR_ALREADY_DEINIT         = 1 << 16,
-    /// @brief This error is generated when creating the plocks fails
-    SBX_BOX_ERROR_PLOCKS_INIT_FAILED     = 1 << 17
+    /// @brief This error is generated when creating the plock array fails
+    SBX_BOX_ERROR_PLOCKS_INIT_FAILED     = 1 << 17,
+
+    // Plock Array error flags
+
+    /// @brief This error is generated when the setting window size fails
+    SBX_PLOCK_ERROR_SET_SIZE_FAILED      = 1 << 19
 
     // Plock error flags
 };

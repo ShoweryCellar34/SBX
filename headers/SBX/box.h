@@ -2,6 +2,7 @@
 #define SBX_BOX_H
 
 // Project headers
+#include <SBX/plock.h>
 #include <SBX/types.h>
 #include <SBX/report.h>
 
@@ -15,7 +16,7 @@ struct SBXBox {
                          height;
 
     // Plocks
-    SBX_plock_t*         plocks;
+    SBX_plock_array_t    plockArray;
 };
 
 /// @brief Allocates memory for a SBXBox object and then sets values according to the provided settings, on error the address pointed to by the SBX_box_t** will be set to NULL
@@ -29,7 +30,7 @@ SBX_report_t SBXBoxCreate(SBX_box_t** box);
 /// @param width  The desired width for the box, cannot be SBX_DIMENSION_UNSET
 /// @param height The desired height for the box, cannot be SBX_DIMENSION_UNSET
 /// @return A SBXReport struct that reports the return state of the destruction function, this can be an error, or a success.
-///         Possible errors include: SBX_COMMON_ERROR_MISSING_ARGUMENT
+///         Possible errors include: SBX_COMMON_ERROR_MISSING_ARGUMENT, SBX_BOX_ERROR_NOT_DEINIT
 SBX_report_t SBXBoxDestroy(SBX_box_t* box);
 
 SBX_report_t SBXBoxInit(SBX_box_t* box,

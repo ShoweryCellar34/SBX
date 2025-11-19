@@ -34,7 +34,7 @@ SBX_report_t SBXBoxCreate(SBX_box_t** box) {
     (*box)->initialized = false;
     (*box)->width       = SBX_DIMENSION_UNSET;
     (*box)->height      = SBX_DIMENSION_UNSET;
-    (*box)->plocks      = SBX_POINTER_UNSET;
+    (*box)->plockArray  = (SBX_plock_array_t){.plocks = NULL, .count = 0};
 
     return (SBX_report_t){
         .errorFlags    = 0,
@@ -95,7 +95,7 @@ SBX_report_t SBXBoxInit(SBX_box_t* box,
     box->height = height;
 
     // Create plock array
-    SBX_report_t report = SBXPlocksCreate(&box->plocks, box->width * box->height);
+    SBX_report_t report = SBXPlockArraySetSize(&box->plockArray, box->width * box->height);
 
     // Check if plock array creation failed
     if(report.errorFlags) {
@@ -133,10 +133,9 @@ SBX_report_t SBXBoxDeinit(SBX_box_t* box) {
         };
     }
 
-    // Check if plock array exists, then destroy them and set pointer to NULL
-    if(box->plocks) {
-        SBXPlocksDestroy(box->plocks, box->width * box->height);
-        box->plocks = NULL;
+    // Check if plock array exists, then destroy it
+    if(box->plockArray.plocks) {
+        SBXPlockArraySetSize(&box->plockArray, 0);
     }
 
     // Set the init state to deinit
@@ -196,7 +195,7 @@ SBX_report_t SBXBoxSetSize(SBX_box_t* box, SBX_box_dimensions_t width, SBX_box_d
     }
 
     // Resize plock array
-    SBX_report_t report = SBXPlocksRecreate(&box->plocks, box->width * box->height, width * height);
+    SBX_report_t report = SBXPlockArraySetSize(&box->plockArray, width * height);
 
     // Check if plock array recreation failed
     if(report.errorFlags) {

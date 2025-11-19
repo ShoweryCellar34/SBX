@@ -23,11 +23,16 @@ typedef uint16_t                SBX_box_dimensions_t;
 
 typedef struct SBXPlockType     SBX_plock_type_t;
 typedef uint8_t                 SBX_plock_type_id_t;
+
 typedef struct SBXPlock         SBX_plock_t;
-typedef uint32_t                SBX_plock_count_t;
-typedef struct SBXPlockArray    SBX_plock_array_t;
-typedef uint32_t                SBX_plock_id_t;
 typedef long double             SBX_plock_temperature_t;
+typedef uint32_t                SBX_plock_id_t;
+
+typedef struct SBXPlockArray    SBX_plock_array_t;
+typedef uint32_t                SBX_plock_count_t;
+
+typedef struct SBXPlockIDMatrix SBX_plock_id_matrix_t;
+typedef SBX_box_dimensions_t    SBX_plock_id_matrix_dimensions_t;
 
 #define SBX_MAX_PLOCK_COUNT     UINT32_MAX
 

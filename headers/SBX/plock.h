@@ -10,10 +10,6 @@ struct SBXPlockType {
     SBX_color_t color;
 };
 
-SBX_report_t SBXPlockTypeCreate(SBX_plock_type_t** plockType, SBX_color_t color);
-
-SBX_report_t SBXPlockTypeDestroy(SBX_plock_type_t* plockType);
-
 /// @brief Structure used by SBXPlock functions to store plock type, temperature, and more data to represent a plock
 struct SBXPlock {
     /// @brief The plock type, this will map to a SBXPlockType object
@@ -32,8 +28,21 @@ struct SBXPlockArray {
     SBX_plock_count_t count;
 };
 
-SBX_report_t SBXPlocksCreate(SBX_plock_array_t** plockArray);
+SBX_report_t SBXPlockArrayGetSize(SBX_plock_array_t* plockArray, SBX_plock_count_t* count);
 
-SBX_report_t SBXPlocksDestroy(SBX_plock_array_t* plockArray);
+SBX_report_t SBXPlockArraySetSize(SBX_plock_array_t* plockArray, SBX_plock_count_t count);
+
+struct SBXPlockIDMatrix {
+    SBX_plock_id_t*                  plockIDs;
+
+    SBX_plock_id_matrix_dimensions_t width, 
+                                     height;
+};
+
+SBX_report_t SBXPlockIDMatrixGetSize(SBX_plock_id_matrix_t* plockIDMatrix,
+                                     SBX_plock_id_matrix_dimensions_t* width, SBX_plock_id_matrix_dimensions_t* height);
+
+SBX_report_t SBXPlockIDMatrixSetSize(SBX_plock_id_matrix_t* plockIDMatrix,
+                                     SBX_plock_id_matrix_dimensions_t width, SBX_plock_id_matrix_dimensions_t height);
 
 #endif // SBX_PLOCK_H
