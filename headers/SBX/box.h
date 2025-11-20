@@ -9,14 +9,15 @@
 /// @brief Structure used by SBXBox fuctions to store pixels, states, and more data to represent a sandbox environment
 struct SBXBox {
     // State keeping
-    SBX_bool_t           initialized;
+    SBX_bool_t            initialized;
 
     // Sandbox parameters
-    SBX_box_dimensions_t width,
-                         height;
+    SBX_box_dimensions_t  width,
+                          height;
 
     // Plocks
-    SBX_plock_array_t    plockArray;
+    SBX_plock_array_t     plockArray;
+    SBX_plock_id_matrix_t plockIDMatrix;
 };
 
 /// @brief Allocates memory for a SBXBox object and then sets values according to the provided settings, on error the address pointed to by the SBX_box_t** will be set to NULL

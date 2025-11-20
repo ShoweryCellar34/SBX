@@ -31,10 +31,11 @@ SBX_report_t SBXBoxCreate(SBX_box_t** box) {
     }
 
     // Set SBXBox members to values provided
-    (*box)->initialized = false;
-    (*box)->width       = SBX_DIMENSION_UNSET;
-    (*box)->height      = SBX_DIMENSION_UNSET;
-    (*box)->plockArray  = (SBX_plock_array_t){.plocks = NULL, .count = 0};
+    (*box)->initialized   = false;
+    (*box)->width         = SBX_DIMENSION_UNSET;
+    (*box)->height        = SBX_DIMENSION_UNSET;
+    (*box)->plockArray    = (SBX_plock_array_t){.plocks = NULL, .count = 0};
+    (*box)->plockIDMatrix = (SBX_plock_id_matrix_t){.plockIDs = NULL, .width = SBX_DIMENSION_UNSET, .height = SBX_DIMENSION_UNSET};
 
     return (SBX_report_t){
         .errorFlags    = 0,
@@ -164,6 +165,8 @@ SBX_report_t SBXBoxGetSize(SBX_box_t* box, SBX_box_dimensions_t* width, SBX_box_
             .reportMessage = SBX_REPORT_STRING_BOX_NOT_INIT
         };
     }
+
+
 
     // Get box size
     *width  = box->width;

@@ -65,11 +65,11 @@ int main(int argc, char* argv[]) {
     }
 
     // Initialize box
-    report = SBXBoxInit(box, 32, 16);
-
-    // Check if window was initialized properly
+    report = SBXBoxInit(box, 8, 4);
+    // Check if box was initialized properly
     if(report.errorFlags) {
         printf("Failed to initialize box: %s", report.reportMessage);
+
         // Destroy box object, and don't worry about errors as we are already exiting
         SBXBoxDestroy(box);
 
@@ -79,31 +79,6 @@ int main(int argc, char* argv[]) {
         glfwTerminate();
 
         return 1;
-    }
-
-    // Create variables for storing box width and height
-    SBX_box_dimensions_t boxWidth = 0, boxHeight = 0;
-    // Querie width and height of box
-    report = SBXBoxGetSize(box, &boxWidth, &boxHeight);
-    // Check for an error
-    if(report.errorFlags) {
-        printf("Failed to querie box dimensions: %s", report.reportMessage);
-        // Destroy box object, and don't worry about errors as we are already exiting
-        SBXBoxDestroy(box);
-
-        // Deinit and destroy window and terminate glfw first, and don't worry about errors as we are already exiting
-        SBXWindowDeinit(window);
-        SBXWindowDestroy(window);
-        glfwTerminate();
-
-        return 1;
-    }
-    // Print the plocks in the box
-    for(SBX_box_dimensions_t y = 0; y < boxHeight; y++) {
-        for(SBX_box_dimensions_t x = 0; x < boxWidth; x++) {
-            printf("%i ", box->plockArray.plocks[y * boxWidth + x].type);
-        }
-        printf("\n");
     }
 
     // Main application loop
