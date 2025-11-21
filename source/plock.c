@@ -124,7 +124,7 @@ SBX_report_t SBXPlockIDMatrixSetSize(SBX_plock_id_matrix_t* plockIDMatrix,
     }
 
     // Allocate memory for the internal array in the SBXPlockArray structure, realloc will malloc if the plock ID matrix pointer is NULL
-    plockIDMatrix = realloc(plockIDMatrix->plockIDs, sizeof(SBX_plock_t) * width * height);
+    plockIDMatrix->plockIDs = realloc(plockIDMatrix->plockIDs, sizeof(SBX_plock_t) * width * height);
 
     // Check for a memory allocation error
     if(!plockIDMatrix->plockIDs) {
@@ -136,7 +136,7 @@ SBX_report_t SBXPlockIDMatrixSetSize(SBX_plock_id_matrix_t* plockIDMatrix,
     }
 
     // Set SBXPlockIDMatrix new internal array members to values unset
-    for(SBX_plock_id_count_t i = 0; i < width * height; i++) {
+    for(SBX_plock_id_count_t i = plockIDMatrix->width * plockIDMatrix->height; i < (size_t)(width * height); i++) {
         plockIDMatrix->plockIDs[i] = SBX_PLOCK_ID_UNSET;
     }
 

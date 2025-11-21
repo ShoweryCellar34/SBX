@@ -91,12 +91,8 @@ SBX_report_t SBXBoxInit(SBX_box_t* box,
         };
     }
 
-    // Set box parameters
-    box->width  = width;
-    box->height = height;
-
     // Create plock array
-    SBX_report_t report = SBXPlockArraySetSize(&box->plockArray, box->width * box->height);
+    SBX_report_t report = SBXPlockArraySetSize(&box->plockArray, width * height);
 
     // Check if plock array creation failed
     if(report.errorFlags) {
@@ -106,6 +102,22 @@ SBX_report_t SBXBoxInit(SBX_box_t* box,
             .reportMessage = SBX_REPORT_STRING_BOX_PLOCKS_FAILED
         };
     }
+
+    // Create plock array
+    report = SBXPlockIDMatrixSetSize(&box->plockIDMatrix, width, height);
+
+    // Check if plock ID matrix creation failed
+    if(report.errorFlags) {
+        // Return error
+        return (SBX_report_t){
+            .errorFlags    = SBX_BOX_ERROR_PLOCK_IDS_INIT_FAILED,
+            .reportMessage = SBX_REPORT_STRING_BOX_PLOCK_IDS_FAILED
+        };
+    }
+
+    // Set box parameters
+    box->width  = width;
+    box->height = height;
 
     // Set init state to init
     box->initialized = true;
@@ -137,6 +149,11 @@ SBX_report_t SBXBoxDeinit(SBX_box_t* box) {
     // Check if plock array exists, then destroy it
     if(box->plockArray.plocks) {
         SBXPlockArraySetSize(&box->plockArray, 0);
+    }
+
+    // Check if plock ID matrix exists, then destroy it
+    if(box->plockIDMatrix.plockIDs) {
+        SBXPlockIDMatrixSetSize(&box->plockIDMatrix, 0, 0);
     }
 
     // Set the init state to deinit
@@ -206,6 +223,18 @@ SBX_report_t SBXBoxSetSize(SBX_box_t* box, SBX_box_dimensions_t width, SBX_box_d
         return (SBX_report_t){
             .errorFlags    = SBX_BOX_ERROR_PLOCKS_INIT_FAILED,
             .reportMessage = SBX_REPORT_STRING_BOX_PLOCKS_FAILED
+        };
+    }
+
+    // Create plock array
+    report = SBXPlockIDMatrixSetSize(&box->plockIDMatrix, width, height);
+
+    // Check if plock ID matrix creation failed
+    if(report.errorFlags) {
+        // Return error
+        return (SBX_report_t){
+            .errorFlags    = SBX_BOX_ERROR_PLOCK_IDS_INIT_FAILED,
+            .reportMessage = SBX_REPORT_STRING_BOX_PLOCK_IDS_FAILED
         };
     }
 

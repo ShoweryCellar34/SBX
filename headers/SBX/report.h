@@ -59,6 +59,8 @@ enum SBXErrorFlags {
     SBX_BOX_ERROR_ALREADY_DEINIT         = 1 << 16,
     /// @brief This error is generated when creating the plock array fails
     SBX_BOX_ERROR_PLOCKS_INIT_FAILED     = 1 << 17,
+    /// @brief This error is generated when creating the plock ID matrix fails
+    SBX_BOX_ERROR_PLOCK_IDS_INIT_FAILED  = 1 << 18,
 
     // Plock Array error flags
 

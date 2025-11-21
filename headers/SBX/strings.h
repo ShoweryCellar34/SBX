@@ -38,6 +38,7 @@
 #define SBX_REPORT_STRING_BOX_NOT_INIT                        "Box not initialized"
 #define SBX_REPORT_STRING_BOX_NOT_DEINIT                      "Box not deinitialized"
 #define SBX_REPORT_STRING_BOX_PLOCKS_FAILED                   "Failed to create plocks"
+#define SBX_REPORT_STRING_BOX_PLOCK_IDS_FAILED                "Failed to create plock id matrix"
 
 // SBXBox success strings
 #define SBX_REPORT_STRING_BOX_INIT_SUCCESSFUL                 "Successfuly initialized box"

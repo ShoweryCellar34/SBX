@@ -81,6 +81,25 @@ int main(int argc, char* argv[]) {
         return 1;
     }
 
+    for(SBX_plock_id_matrix_dimensions_t y = 0; y < box->plockIDMatrix.height; y++) {
+        for(SBX_plock_id_matrix_dimensions_t x = 0; x < box->plockIDMatrix.width; x++) {
+            size_t index = box->plockIDMatrix.plockIDs[(y * box->width + x) + 1];
+            printf("%i ", box->plockIDMatrix.plockIDs[index]);
+            box->plockIDMatrix.plockIDs[index] = 1;
+        }
+        printf("\n");
+    }
+    printf("\n");
+
+    SBXBoxSetSize(box, 11, 5);
+    for(SBX_plock_id_matrix_dimensions_t y = 0; y < box->plockIDMatrix.height; y++) {
+        for(SBX_plock_id_matrix_dimensions_t x = 0; x < box->plockIDMatrix.width; x++) {
+            size_t index = box->plockIDMatrix.plockIDs[y * x];
+            printf("%i ", box->plockIDMatrix.plockIDs[index]);
+        }
+        printf("\n");
+    }
+
     // Main application loop
     while(!glfwWindowShouldClose(window->windowHandle)) {
         // Clear the framebuffer
