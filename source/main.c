@@ -83,9 +83,9 @@ int main(int argc, char* argv[]) {
 
     for(SBX_plock_id_matrix_dimensions_t y = 0; y < box->plockIDMatrix.height; y++) {
         for(SBX_plock_id_matrix_dimensions_t x = 0; x < box->plockIDMatrix.width; x++) {
-            size_t index = box->plockIDMatrix.plockIDs[(y * box->width + x) + 1];
+            size_t index = y * box->width + x;
+            box->plockIDMatrix.plockIDs[index] = y;
             printf("%i ", box->plockIDMatrix.plockIDs[index]);
-            box->plockIDMatrix.plockIDs[index] = 1;
         }
         printf("\n");
     }
@@ -94,7 +94,7 @@ int main(int argc, char* argv[]) {
     SBXBoxSetSize(box, 11, 5);
     for(SBX_plock_id_matrix_dimensions_t y = 0; y < box->plockIDMatrix.height; y++) {
         for(SBX_plock_id_matrix_dimensions_t x = 0; x < box->plockIDMatrix.width; x++) {
-            size_t index = box->plockIDMatrix.plockIDs[y * x];
+            size_t index = y * box->width + x;
             printf("%i ", box->plockIDMatrix.plockIDs[index]);
         }
         printf("\n");

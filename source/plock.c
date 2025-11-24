@@ -115,6 +115,7 @@ SBX_report_t SBXPlockIDMatrixSetSize(SBX_plock_id_matrix_t* plockIDMatrix,
     // If width or height is 0 destroy the matrix
     if(!(width || height) && plockIDMatrix->plockIDs) {
         free(plockIDMatrix->plockIDs);
+        plockIDMatrix->width  = 0;
         plockIDMatrix->height = 0;
 
         return (SBX_report_t){
@@ -138,6 +139,12 @@ SBX_report_t SBXPlockIDMatrixSetSize(SBX_plock_id_matrix_t* plockIDMatrix,
     // Set SBXPlockIDMatrix new internal array members to values unset
     for(SBX_plock_id_count_t i = plockIDMatrix->width * plockIDMatrix->height; i < (size_t)(width * height); i++) {
         plockIDMatrix->plockIDs[i] = SBX_PLOCK_ID_UNSET;
+    }
+
+    for(SBX_plock_id_matrix_dimensions_t y = plockIDMatrix->height - 1; y >= 0; y--) {
+        void* dest = &plockIDMatrix->plockIDs[y * plockIDMatrix->width];
+        void* src  = &plockIDMatrix->plockIDs[y * width];
+        memcpy(dest, src, plockIDMatrix->width);
     }
 
     // Update the width and height variables in the SBXPlockIDMatrix
