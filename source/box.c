@@ -226,7 +226,7 @@ SBX_report_t SBXBoxSetSize(SBX_box_t* box, SBX_box_dimensions_t width, SBX_box_d
         };
     }
 
-    // Create plock array
+    // Create/Resize plock array
     report = SBXPlockIDMatrixSetSize(&box->plockIDMatrix, width, height);
 
     // Check if plock ID matrix creation failed

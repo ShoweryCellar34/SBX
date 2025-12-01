@@ -65,7 +65,7 @@ int main(int argc, char* argv[]) {
     }
 
     // Initialize box
-    report = SBXBoxInit(box, 8, 4);
+    report = SBXBoxInit(box, 5, 5);
     // Check if box was initialized properly
     if(report.errorFlags) {
         printf("Failed to initialize box: %s", report.reportMessage);
@@ -91,7 +91,7 @@ int main(int argc, char* argv[]) {
     }
     printf("\n");
 
-    SBXBoxSetSize(box, 11, 5);
+    SBXBoxSetSize(box, 8, 10);
     for(SBX_plock_id_matrix_dimensions_t y = 0; y < box->plockIDMatrix.height; y++) {
         for(SBX_plock_id_matrix_dimensions_t x = 0; x < box->plockIDMatrix.width; x++) {
             size_t index = y * box->width + x;
