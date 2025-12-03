@@ -144,11 +144,11 @@ SBX_report_t SBXPlockIDMatrixSetSize(SBX_plock_id_matrix_t* plockIDMatrix,
     for(SBX_plock_id_matrix_dimensions_t y = plockIDMatrix->height - 1; y > 0; y--) {
         void* dest = &plockIDMatrix->plockIDs[y * width];
         void* src  = &plockIDMatrix->plockIDs[y * plockIDMatrix->width];
-        memcpy(dest, src, plockIDMatrix->width * sizeof(SBX_plock_id_matrix_dimensions_t));
+        memcpy(dest, src, plockIDMatrix->width * sizeof(SBX_plock_id_t));
 
-        // if(width > plockIDMatrix->width) {
-        //     memset(&plockIDMatrix->plockIDs[y * width], SBX_PLOCK_ID_UNSET, (width - plockIDMatrix->width) * sizeof(SBX_plock_id_matrix_dimensions_t));
-        // }
+        if(width > plockIDMatrix->width) {
+            memset(&plockIDMatrix->plockIDs[y * plockIDMatrix->width], SBX_PLOCK_ID_UNSET, (width - plockIDMatrix->width) * sizeof(SBX_plock_id_t));
+        }
     }
 
     // Update the width and height variables in the SBXPlockIDMatrix
