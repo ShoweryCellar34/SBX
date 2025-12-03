@@ -22,7 +22,7 @@ if(MSVC)
     target_compile_definitions(SBX PRIVATE _CRT_SECURE_NO_WARNINGS)
 endif()
 if(GCC)
-    target_compile_options(SBX PRIVATE -Wall -Wextra -Wpedantic -fsanitize=address,undefined)
+    target_compile_options(SBX PRIVATE -Wall -Wextra -Wpedantic -Werror -fsanitize=address,undefined)
 endif()
 
 if(MSVC)
