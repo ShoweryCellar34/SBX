@@ -124,11 +124,11 @@ SBX_report_t SBXPlockIDMatrixSetSize(SBX_plock_id_matrix_t* plockIDMatrix,
         };
     }
 
-    // Allocate memory for the internal array in the SBXPlockArray structure, realloc will malloc if the plock ID matrix pointer is NULL
-    plockIDMatrix->plockIDs = realloc(plockIDMatrix->plockIDs, sizeof(SBX_plock_t) * width * height);
+    // Allocate memory for the new internal array in the SBXPlockArray structure, calloc is used to NULL the new memory on allocation, cleaning up the code
+    SBX_plock_id_t* newPlockIDs = calloc(width * height, sizeof(SBX_plock_id_t));
 
     // Check for a memory allocation error
-    if(!plockIDMatrix->plockIDs) {
+    if(!newPlockIDs) {
         // Return error
         return (SBX_report_t){
             .errorFlags    = SBX_COMMON_ERROR_MEMORY_FAILURE,
@@ -136,24 +136,20 @@ SBX_report_t SBXPlockIDMatrixSetSize(SBX_plock_id_matrix_t* plockIDMatrix,
         };
     }
 
-    // Set SBXPlockIDMatrix new internal array members to values unset
-    for(SBX_plock_id_count_t i = plockIDMatrix->width * plockIDMatrix->height; i < (size_t)(width * height); i++) {
-        plockIDMatrix->plockIDs[i] = SBX_PLOCK_ID_UNSET;
-    }
-
+    // Copy SBX_plock_id_t data from old matrix to new one
     for(SBX_plock_id_matrix_dimensions_t y = plockIDMatrix->height - 1; y > 0; y--) {
-        void* dest = &plockIDMatrix->plockIDs[y * width];
+        void* dest = &newPlockIDs[y * width];
         void* src  = &plockIDMatrix->plockIDs[y * plockIDMatrix->width];
-        memcpy(dest, src, plockIDMatrix->width * sizeof(SBX_plock_id_t));
-
-        if(width > plockIDMatrix->width) {
-            memset(&plockIDMatrix->plockIDs[y * plockIDMatrix->width], SBX_PLOCK_ID_UNSET, (width - plockIDMatrix->width) * sizeof(SBX_plock_id_t));
-        }
+        memcpy(dest, src, (plockIDMatrix->width < width ? plockIDMatrix->width : width) * sizeof(SBX_plock_id_t));
     }
 
     // Update the width and height variables in the SBXPlockIDMatrix
     plockIDMatrix->width  = width;
     plockIDMatrix->height = height;
+
+    // Free old plockIDs pointer and set to newPlockIDs
+    free(plockIDMatrix->plockIDs);
+    plockIDMatrix->plockIDs = newPlockIDs;
 
     return (SBX_report_t){
         .errorFlags    = 0,

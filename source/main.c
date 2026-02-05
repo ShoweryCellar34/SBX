@@ -81,24 +81,7 @@ int main(int argc, char* argv[]) {
         return 1;
     }
 
-    for(SBX_plock_id_matrix_dimensions_t y = 0; y < box->plockIDMatrix.height; y++) {
-        for(SBX_plock_id_matrix_dimensions_t x = 0; x < box->plockIDMatrix.width; x++) {
-            size_t index = y * box->width + x;
-            box->plockIDMatrix.plockIDs[index] = y;
-            printf("%i ", box->plockIDMatrix.plockIDs[index]);
-        }
-        printf("\n");
-    }
-    printf("\n");
-
-    SBXBoxSetSize(box, 8, 10);
-    for(SBX_plock_id_matrix_dimensions_t y = 0; y < box->plockIDMatrix.height; y++) {
-        for(SBX_plock_id_matrix_dimensions_t x = 0; x < box->plockIDMatrix.width; x++) {
-            size_t index = y * box->width + x;
-            printf("%i ", box->plockIDMatrix.plockIDs[index]);
-        }
-        printf("\n");
-    }
+    // Create texture to represent the box data
 
     // Main application loop
     while(!glfwWindowShouldClose(window->windowHandle)) {
