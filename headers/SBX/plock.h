@@ -5,7 +5,7 @@
 #include <SBX/types.h>
 #include <SBX/report.h>
 
-/// @brief Structure used by SBXPlockType fuctions to store color, physics type, and more data to represent a plock type
+/// @brief Structure used by SBXPlockType fuctions to store color, physics mode, and more data to represent a plock type
 struct SBXPlockType {
     SBX_color_t color;
 };
