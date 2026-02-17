@@ -7,7 +7,7 @@
 
 SBX_report_t SBXPlockArrayGetSize(SBX_plock_array_t* plockArray, SBX_plock_count_t* count) {
     // Check if required arguments are provided
-    if(!plockArray) {
+    if(plockArray == SBX_POINTER_UNSET) {
         // Return error
         return (SBX_report_t){
             .errorFlags    = SBX_COMMON_ERROR_MISSING_ARGUMENT,
@@ -28,7 +28,7 @@ SBX_report_t SBXPlockArrayGetSize(SBX_plock_array_t* plockArray, SBX_plock_count
 
 SBX_report_t SBXPlockArraySetSize(SBX_plock_array_t* plockArray, SBX_plock_count_t count) {
     // Check if required arguments are provided
-    if(!(plockArray)) {
+    if(plockArray == SBX_POINTER_UNSET) {
         // Return error
         return (SBX_report_t){
             .errorFlags    = SBX_COMMON_ERROR_MISSING_ARGUMENT,
@@ -37,7 +37,7 @@ SBX_report_t SBXPlockArraySetSize(SBX_plock_array_t* plockArray, SBX_plock_count
     }
 
     // If count is 0 destroy the array
-    if(!count && plockArray->plocks) {
+    if(!count && (plockArray->plocks =! SBX_POINTER_UNSET)) {
         free(plockArray->plocks);
         plockArray->count = 0;
 
@@ -51,7 +51,7 @@ SBX_report_t SBXPlockArraySetSize(SBX_plock_array_t* plockArray, SBX_plock_count
     plockArray->plocks = realloc(plockArray->plocks, sizeof(SBX_plock_t) * count);
 
     // Check for a memory allocation error
-    if(!plockArray->plocks) {
+    if(plockArray->plocks == SBX_POINTER_UNSET) {
         // Return error
         return (SBX_report_t){
             .errorFlags    = SBX_COMMON_ERROR_MEMORY_FAILURE,
@@ -78,7 +78,7 @@ SBX_report_t SBXPlockIDMatrixGetSize(SBX_plock_id_matrix_t* plockIDMatrix,
                                      SBX_plock_id_matrix_dimensions_t* width, SBX_plock_id_matrix_dimensions_t* height)
 {
     // Check if required arguments are provided
-    if(!plockIDMatrix) {
+    if(plockIDMatrix == SBX_POINTER_UNSET) {
         // Return error
         return (SBX_report_t){
             .errorFlags    = SBX_COMMON_ERROR_MISSING_ARGUMENT,
@@ -86,10 +86,10 @@ SBX_report_t SBXPlockIDMatrixGetSize(SBX_plock_id_matrix_t* plockIDMatrix,
         };
     }
 
-    if(width) {
+    if(width != SBX_DIMENSION_UNSET) {
         *width = plockIDMatrix->width;
     }
-    if(height) {
+    if(height != SBX_DIMENSION_UNSET) {
         *height = plockIDMatrix->height;
     }
 
@@ -104,7 +104,7 @@ SBX_report_t SBXPlockIDMatrixSetSize(SBX_plock_id_matrix_t* plockIDMatrix,
                                      SBX_plock_id_matrix_dimensions_t width, SBX_plock_id_matrix_dimensions_t height)
 {
     // Check if required arguments are provided
-    if(!(plockIDMatrix)) {
+    if(plockIDMatrix == SBX_POINTER_UNSET) {
         // Return error
         return (SBX_report_t){
             .errorFlags    = SBX_COMMON_ERROR_MISSING_ARGUMENT,
@@ -113,7 +113,7 @@ SBX_report_t SBXPlockIDMatrixSetSize(SBX_plock_id_matrix_t* plockIDMatrix,
     }
 
     // If width or height is 0 destroy the matrix
-    if(!(width || height) && plockIDMatrix->plockIDs) {
+    if((width == SBX_DIMENSION_UNSET || height == SBX_DIMENSION_UNSET) && plockIDMatrix->plockIDs != SBX_POINTER_UNSET) {
         free(plockIDMatrix->plockIDs);
         plockIDMatrix->width  = 0;
         plockIDMatrix->height = 0;
@@ -128,7 +128,7 @@ SBX_report_t SBXPlockIDMatrixSetSize(SBX_plock_id_matrix_t* plockIDMatrix,
     SBX_plock_id_t* newPlockIDs = calloc(width * height, sizeof(SBX_plock_id_t));
 
     // Check for a memory allocation error
-    if(!newPlockIDs) {
+    if(newPlockIDs == SBX_POINTER_UNSET) {
         // Return error
         return (SBX_report_t){
             .errorFlags    = SBX_COMMON_ERROR_MEMORY_FAILURE,

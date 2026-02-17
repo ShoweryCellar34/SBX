@@ -10,7 +10,7 @@
 // Box creation function
 SBX_report_t SBXBoxCreate(SBX_box_t** box) {
     // Check if required arguments are provided
-    if(!box) {
+    if(box == SBX_POINTER_UNSET) {
         // Return error
         return (SBX_report_t){
             .errorFlags    = SBX_COMMON_ERROR_MISSING_ARGUMENT,
@@ -30,7 +30,7 @@ SBX_report_t SBXBoxCreate(SBX_box_t** box) {
         };
     }
 
-    // Set SBXBox members to values provided
+    // Set SBXBox members to values a deinitialized state
     (*box)->initialized   = false;
     (*box)->width         = SBX_DIMENSION_UNSET;
     (*box)->height        = SBX_DIMENSION_UNSET;
@@ -46,7 +46,7 @@ SBX_report_t SBXBoxCreate(SBX_box_t** box) {
 // Box destruction function
 SBX_report_t SBXBoxDestroy(SBX_box_t* box) {
     // Check if required arguments are provided
-    if(!box) {
+    if(box == SBX_POINTER_UNSET) {
         // Return error
         return (SBX_report_t){
             .errorFlags    = SBX_COMMON_ERROR_MISSING_ARGUMENT,
@@ -75,7 +75,7 @@ SBX_report_t SBXBoxInit(SBX_box_t* box,
                         SBX_box_dimensions_t height)
 {
     // Check if required arguments are provided
-    if(!(box && width && height)) {
+    if((box == SBX_POINTER_UNSET) || (width == SBX_DIMENSION_UNSET) || (height == SBX_DIMENSION_UNSET)) {
         // Return error
         return (SBX_report_t){
             .errorFlags    = SBX_COMMON_ERROR_MISSING_ARGUMENT,
@@ -130,7 +130,7 @@ SBX_report_t SBXBoxInit(SBX_box_t* box,
 
 SBX_report_t SBXBoxDeinit(SBX_box_t* box) {
     // Check if required arguments are provided
-    if(!box) {
+    if(box == SBX_POINTER_UNSET) {
         // Return error
         return (SBX_report_t){
             .errorFlags    = SBX_COMMON_ERROR_MISSING_ARGUMENT,
@@ -167,7 +167,7 @@ SBX_report_t SBXBoxDeinit(SBX_box_t* box) {
 
 SBX_report_t SBXBoxGetSize(SBX_box_t* box, SBX_box_dimensions_t* width, SBX_box_dimensions_t* height) {
     // Check if required arguments are provided
-    if(!box) {
+    if(box == SBX_POINTER_UNSET) {
         // Return error
         return (SBX_report_t){
             .errorFlags    = SBX_COMMON_ERROR_MISSING_ARGUMENT,
@@ -183,11 +183,13 @@ SBX_report_t SBXBoxGetSize(SBX_box_t* box, SBX_box_dimensions_t* width, SBX_box_
         };
     }
 
-
-
     // Get box size
-    *width  = box->width;
-    *height = box->height;
+    if(width != SBX_POINTER_UNSET) {
+        *width  = box->width;
+    }
+    if(height != SBX_POINTER_UNSET) {
+        *height = box->height;
+    }
 
     // Return success
     return (SBX_report_t){
@@ -198,7 +200,7 @@ SBX_report_t SBXBoxGetSize(SBX_box_t* box, SBX_box_dimensions_t* width, SBX_box_
 
 SBX_report_t SBXBoxSetSize(SBX_box_t* box, SBX_box_dimensions_t width, SBX_box_dimensions_t height) {
     // Check if required arguments are provided
-    if(!(box && width && height)) {
+    if((box == SBX_POINTER_UNSET) || (width == SBX_DIMENSION_UNSET) || (height == SBX_DIMENSION_UNSET)) {
         // Return error
         return (SBX_report_t){
             .errorFlags    = SBX_COMMON_ERROR_MISSING_ARGUMENT,

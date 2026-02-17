@@ -13,7 +13,7 @@
 // Window creation function
 SBX_report_t SBXWindowCreate(SBX_window_t** window) {
     // Check if required arguments are provided
-    if(!window) {
+    if(window == SBX_POINTER_UNSET) {
         // Return error
         return (SBX_report_t){
             .errorFlags    = SBX_COMMON_ERROR_MISSING_ARGUMENT,
@@ -47,7 +47,7 @@ SBX_report_t SBXWindowCreate(SBX_window_t** window) {
 // Window destruction function
 SBX_report_t SBXWindowDestroy(SBX_window_t* window) {
     // Check if required arguments are provided
-    if(!window) {
+    if(window == SBX_POINTER_UNSET) {
         // Return error
         return (SBX_report_t){
             .errorFlags    = SBX_COMMON_ERROR_MISSING_ARGUMENT,
@@ -78,7 +78,7 @@ SBX_report_t SBXWindowInit(SBX_window_t* window,
                                   SBX_window_dimensions_t height)
 {
     // Check if required arguments are provided
-    if(!(window && title && width && height)) {
+    if((window == SBX_POINTER_UNSET) || (title == SBX_POINTER_UNSET) || (width == SBX_DIMENSION_UNSET) || (height == SBX_DIMENSION_UNSET)) {
         // Return error
         return (SBX_report_t){
             .errorFlags    = SBX_COMMON_ERROR_MISSING_ARGUMENT,
@@ -179,18 +179,19 @@ SBX_report_t SBXWindowDeinit(SBX_window_t* window) {
         };
     }
 
-    // Check if window handle exists, then destroy window and set handle to NULL
+    // Check if the window handle exists, then destroy window and set handle to SBX_POINTER_UNSET
     if(window->windowHandle) {
         glfwDestroyWindow(window->windowHandle);
-        window->windowHandle = NULL;
+        window->windowHandle = SBX_POINTER_UNSET;
     }
 
-    // Check if the OpenGL context is allocated/initialized, then free the memory
+    // Check if the OpenGL context handle exists, then destroy OpenGL context and set handle to SBX_POINTER_UNSET
     if(window->openglContext) {
         free(window->openglContext);
+        window->openglContext = SBX_POINTER_UNSET;
     }
 
-    // Set the init state to deinit
+    // Set the initialization state to deinitialized
     window->initialized = false;
 
     return (SBX_report_t){
@@ -202,7 +203,7 @@ SBX_report_t SBXWindowDeinit(SBX_window_t* window) {
 // Window get size function
 SBX_report_t SBXWindowGetSize(SBX_window_t* window, SBX_window_dimensions_t* width, SBX_window_dimensions_t* height) {
     // Check if required arguments are provided
-    if(!window) {
+    if(window == SBX_POINTER_UNSET) {
         // Return error
         return (SBX_report_t){
             .errorFlags    = SBX_COMMON_ERROR_MISSING_ARGUMENT,
@@ -238,7 +239,7 @@ SBX_report_t SBXWindowGetSize(SBX_window_t* window, SBX_window_dimensions_t* wid
 // Window set size function
 SBX_report_t SBXWindowSetSize(SBX_window_t* window, SBX_window_dimensions_t width, SBX_window_dimensions_t height) {
     // Check if required arguments are provided
-    if(!(window && width && height)) {
+    if((window == SBX_POINTER_UNSET) || (width == SBX_DIMENSION_UNSET) || (height == SBX_DIMENSION_UNSET)) {
         // Return error
         return (SBX_report_t){
             .errorFlags    = SBX_COMMON_ERROR_MISSING_ARGUMENT,
@@ -274,7 +275,7 @@ SBX_report_t SBXWindowSetSize(SBX_window_t* window, SBX_window_dimensions_t widt
 // Window get title function
 SBX_report_t SBXWindowGetTitle(SBX_window_t* window, SBX_string_t* title) {
     // Check if required arguments are provided
-    if(!(window && title)) {
+    if((window == SBX_POINTER_UNSET) || (title == SBX_POINTER_UNSET)) {
         // Return error
         return (SBX_report_t){
             .errorFlags    = SBX_COMMON_ERROR_MISSING_ARGUMENT,
@@ -310,7 +311,7 @@ SBX_report_t SBXWindowGetTitle(SBX_window_t* window, SBX_string_t* title) {
 // Window get title function
 SBX_report_t SBXWindowSetTitle(SBX_window_t* window, SBX_string_t title) {
     // Check if required arguments are provided
-    if(!(window && title)) {
+    if((window == SBX_POINTER_UNSET) || (title == SBX_POINTER_UNSET)) {
         // Return error
         return (SBX_report_t){
             .errorFlags    = SBX_COMMON_ERROR_MISSING_ARGUMENT,

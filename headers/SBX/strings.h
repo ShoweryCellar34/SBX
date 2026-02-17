@@ -6,8 +6,8 @@
 #define SBX_REPORT_STRING_COMMON_MEMORY_FAILURE               "Error executing a memory operation (allocation, reallocation, and deallocation)"
 
 // Common success string
-#define SBX_REPORT_STRING_COMMON_CREATION_SUCCESSFUL          "Successfuly created/allocated object"
-#define SBX_REPORT_STRING_COMMON_DESTRUCTION_SUCCESSFUL       "Successfuly destroyed/freed object"
+#define SBX_REPORT_STRING_COMMON_CREATION_SUCCESSFUL          "Successfully created/allocated object"
+#define SBX_REPORT_STRING_COMMON_DESTRUCTION_SUCCESSFUL       "Successfully destroyed/freed object"
 
 // SBXwindow error strings
 #define SBX_REPORT_STRING_WINDOW_ALREADY_INIT                 "Window already initialized"
@@ -25,12 +25,12 @@
 #define SBX_REPORT_STRING_WINDOW_SET_TITLE_FAILED             "Setting window title failed"
 
 // SBXWindow success strings
-#define SBX_REPORT_STRING_WINDOW_INIT_SUCCESSFUL              "Successfuly initialized window"
-#define SBX_REPORT_STRING_WINDOW_DEINIT_SUCCESSFUL            "Successfuly deinitialized window"
-#define SBX_REPORT_STRING_WINDOW_GET_SIZE_SUCCESSFUL          "Successfuly got window size"
-#define SBX_REPORT_STRING_WINDOW_SET_SIZE_SUCCESSFUL          "Successfuly set window size"
-#define SBX_REPORT_STRING_WINDOW_GET_TITLE_SUCCESSFUL         "Successfuly got window title"
-#define SBX_REPORT_STRING_WINDOW_SET_TITLE_SUCCESSFUL         "Successfuly set window title"
+#define SBX_REPORT_STRING_WINDOW_INIT_SUCCESSFUL              "Successfully initialized window"
+#define SBX_REPORT_STRING_WINDOW_DEINIT_SUCCESSFUL            "Successfully deinitialized window"
+#define SBX_REPORT_STRING_WINDOW_GET_SIZE_SUCCESSFUL          "Successfully got window size"
+#define SBX_REPORT_STRING_WINDOW_SET_SIZE_SUCCESSFUL          "Successfully set window size"
+#define SBX_REPORT_STRING_WINDOW_GET_TITLE_SUCCESSFUL         "Successfully got window title"
+#define SBX_REPORT_STRING_WINDOW_SET_TITLE_SUCCESSFUL         "Successfully set window title"
 
 // SBXBox error strings
 #define SBX_REPORT_STRING_BOX_ALREADY_INIT                    "Box already initialized"
@@ -41,21 +41,21 @@
 #define SBX_REPORT_STRING_BOX_PLOCK_IDS_FAILED                "Failed to create plock id matrix"
 
 // SBXBox success strings
-#define SBX_REPORT_STRING_BOX_INIT_SUCCESSFUL                 "Successfuly initialized box"
-#define SBX_REPORT_STRING_BOX_DEINIT_SUCCESSFUL               "Successfuly deinitialized box"
-#define SBX_REPORT_STRING_BOX_GET_SIZE_SUCCESSFUL             "Successfuly got box size"
-#define SBX_REPORT_STRING_BOX_SET_SIZE_SUCCESSFUL             "Successfuly set box size"
+#define SBX_REPORT_STRING_BOX_INIT_SUCCESSFUL                 "Successfully initialized box"
+#define SBX_REPORT_STRING_BOX_DEINIT_SUCCESSFUL               "Successfully deinitialized box"
+#define SBX_REPORT_STRING_BOX_GET_SIZE_SUCCESSFUL             "Successfully got box size"
+#define SBX_REPORT_STRING_BOX_SET_SIZE_SUCCESSFUL             "Successfully set box size"
 
 // SBXPlockArray error strings
 
 // SBXPlockArray success strings
-#define SBX_REPORT_STRING_PLOCK_ARRAY_GET_SIZE_SUCCESSFUL     "Successfuly got plock array size"
-#define SBX_REPORT_STRING_PLOCK_ARRAY_SET_SIZE_SUCCESSFUL     "Successfuly set plock array size"
+#define SBX_REPORT_STRING_PLOCK_ARRAY_GET_SIZE_SUCCESSFUL     "Successfully got plock array size"
+#define SBX_REPORT_STRING_PLOCK_ARRAY_SET_SIZE_SUCCESSFUL     "Successfully set plock array size"
 
 // SBXPlockIDMatrix error strings
 
 // SBXPlockIDMatrix success string
-#define SBX_REPORT_STRING_PLOCK_ID_MATRIX_GET_SIZE_SUCCESSFUL "Successfuly got plock ID matrix size"
-#define SBX_REPORT_STRING_PLOCK_ID_MATRIX_SET_SIZE_SUCCESSFUL "Successfuly set plock ID matrix size"
+#define SBX_REPORT_STRING_PLOCK_ID_MATRIX_GET_SIZE_SUCCESSFUL "Successfully got plock ID matrix size"
+#define SBX_REPORT_STRING_PLOCK_ID_MATRIX_SET_SIZE_SUCCESSFUL "Successfully set plock ID matrix size"
 
 #endif // SBX_STRINGS_H
