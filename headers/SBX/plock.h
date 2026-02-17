@@ -5,26 +5,19 @@
 #include <SBX/types.h>
 #include <SBX/report.h>
 
-/// @brief Structure used by SBXPlockType fuctions to store color, physics mode, and more data to represent a plock type
 struct SBXPlockType {
     SBX_color_t color;
 };
 
-/// @brief Structure used by SBXPlock functions to store plock type, temperature, and more data to represent a plock
 struct SBXPlock {
-    /// @brief The plock type, this will map to a SBXPlockType object
     SBX_plock_type_id_t     type;
 
-    /// @brief The temperature of the plock
     SBX_plock_temperature_t temperature;
 };
 
-/// @brief Structure used by SBXPlockArray functions to store plocks to represent a plock array
 struct SBXPlockArray {
-    /// @brief Pointer to an array of plocks
     SBX_plock_t*      plocks;
 
-    /// @brief The count of plocks in the array (not bytes)
     SBX_plock_count_t count;
 };
 

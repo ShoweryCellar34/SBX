@@ -9,18 +9,19 @@
 #include <glad/gl.h>
 #include <GLFW/glfw3.h>
 
-/// @brief Structure used by SBXWindow fuctions to store window handle, OpenGl context, and more data to represent a window
+/// @brief Structure used by SBXWindow* functions to store window and OpenGl context handles required to represent a window
 struct SBXWindow {
-    // State keeping
+    /// @brief SBX_bool_t object used to keep initialization state
     SBX_bool_t initialized;
 
-    // Handles
+    /// @brief GLFWwindow* object that points to the internal window handle
     GLFWwindow*     windowHandle;
+    /// @brief GladGLContext* object that points to the internal OpenGL context handle
     GladGLContext*  openglContext;
 };
 
-/// @brief Allocates memory for a SBXWindow object and then initializes values to a deinitialized state, on error the address pointed to by the SBX_window_t** will be set to NULL
-/// @param window A pointer to a SBX_window_t pointer to set to the allocated SBXWindow objects memory, cannot be SBX_POINTER_UNSET
+/// @brief Allocates memory for a SBXWindow object and then sets values to a deinitialized state.
+/// @param window A pointer to a SBX_window_t pointer that will be set to the new object, cannot be SBX_POINTER_UNSET
 /// @return A SBXReport struct that reports the return state of the creation function, this can be an error, or a success.
 ///         Possible errors include: SBX_WINDOW_ERROR_MISSING_ARGUMENT, SBX_WINDOW_ERROR_MEMORY_FAILURE
 SBX_report_t SBXWindowCreate(SBX_window_t** window);

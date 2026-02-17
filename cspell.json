@@ -1,0 +1,29 @@
+{
+  "version": "0.2",
+  "language": "en",
+  "words": [
+    "uint8", "uint16", "uint32", "uint64",
+    "int8", "int16", "int32", "int64",
+    "stdbool", "stdint", "size_t", "ssize_t",
+    "inheritdoc", "retval", "nonreentrant", "ioctl"
+  ],
+  "flagWords": [],
+  "dictionaries": [
+    "c",
+    "softwareTerms",
+    "misc"
+  ],
+  "ignoreRegExpList": [
+    "/\\\\[a-z]+/",
+    "/@[a-z]+/",
+    "/#include.*/"
+  ],
+  "enabledLanguageIds": [
+    "c"
+  ],
+  "ignorePaths": [
+    "vendors/**",
+    ".git/**",
+    "build/**"
+  ]
+}
